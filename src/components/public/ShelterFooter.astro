@@ -46,7 +46,7 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
           {phone && (
             <a
               href={`tel:${phone.replace(/[^\d+]/g, "")}`}
-              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full md:w-full md:justify-center bg-(--accent) px-6 py-3 text-left text-lg md:text-center font-semibold text-(--accent-contrast) hover:shadow-md"
+              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full bg-(--accent) px-6 py-3 text-left text-lg font-semibold text-(--accent-contrast) hover:shadow-md"
             >
               {tAbout("call", { phone })}
             </a>
@@ -54,7 +54,7 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
           {messenger && (
             <a
               href={messenger}
-              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full md:w-full md:justify-center bg-(--accent) px-6 py-3 text-left text-lg md:text-center font-semibold text-(--accent-contrast) hover:shadow-md"
+              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full bg-(--accent) px-6 py-3 text-left text-lg font-semibold text-(--accent-contrast) hover:shadow-md"
               target="_blank"
               rel="noopener noreferrer"
             >
