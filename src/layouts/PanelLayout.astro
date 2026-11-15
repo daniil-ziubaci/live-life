@@ -13,9 +13,12 @@ const showNav = claims?.aal === "aal2";
 const account = claims?.email?.split("@")[0] ?? "";
 const path = Astro.url.pathname;
 let shelterName: string | null = null;
+let brandPath: string | null = null;
 if (claims) {
-  const { data } = await Astro.locals.supabase.from("shelter").select("name").maybeSingle();
-  shelterName = data?.name ?? (await loadShelterRow())?.name ?? null;
+  const { data } = await Astro.locals.supabase.from("shelter").select("name, brand_path").maybeSingle();
+  const row = data ?? (await loadShelterRow());
+  shelterName = row?.name ?? null;
+  brandPath = row?.brand_path ?? null;
 }
 const sections = [
   { href: "/volunteer/needs", label: "Закупки", inSection: path.startsWith("/volunteer/needs") },
@@ -27,7 +30,7 @@ const backHref = inner ? (inner[1] === "pets" ? "/volunteer" : `/volunteer/${inn
 const showSections = showNav && !path.startsWith("/volunteer/2fa");
 ---
 
-<Base title={title} noindex>
+<Base title={title} noindex brandPath={brandPath}>
   {
     header && (
       <Fragment>
