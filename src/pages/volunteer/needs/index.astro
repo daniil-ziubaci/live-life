@@ -3,7 +3,7 @@ import InvalidRecord from "@/components/panel/InvalidRecord.astro";
 import NeedsNav from "@/components/panel/NeedsNav.astro";
 import PanelLayout from "@/layouts/PanelLayout.astro";
 import { takeFlash } from "@/lib/flash";
-import { fieldClass, hintClass, labelClass, primaryButtonClass, selectClass } from "@/lib/formClasses";
+import { fieldClass, hintClass, labelClass, primaryButtonClass } from "@/lib/formClasses";
 import { formatRemaining } from "@/lib/formatRemaining";
 import { handleNeedPost } from "@/lib/needActions";
 import { isPost, isVolunteer, NOT_A_VOLUNTEER } from "@/lib/panel";
@@ -66,28 +66,32 @@ const heading = "План закупок: приёмка товара";
             >
               <input type="hidden" name="intent" value="receive" />
               <div class="flex flex-col gap-1">
-                <label for="itemId" class={labelClass}>
+                <label for="item" class={labelClass}>
                   Позиция
                 </label>
-                <div class="relative">
-                  <select id="itemId" name="itemId" required class={selectClass}>
-                    <option value="" disabled selected>
-                      Выберите позицию
-                    </option>
-                    {items.map((item) => (
-                      <option value={item.id}>
-                        {item.name}: {formatRemaining(item.remaining, item.unit)}
-                      </option>
-                    ))}
-                  </select>
-                  <span
-                    aria-hidden="true"
-                    class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-(--muted)"
-                  >
-                    ▾
-                  </span>
-                </div>
+                <input
+                  id="item"
+                  type="text"
+                  list="receive-names"
+                  autocomplete="off"
+                  placeholder="Начните вводить название"
+                  required
+                  class={fieldClass}
+                />
+                <datalist id="receive-names">
+                  {items.map((item) => (
+                    <option
+                      value={item.name}
+                      data-id={item.id}
+                      data-remaining={formatRemaining(item.remaining, item.unit)}
+                    />
+                  ))}
+                </datalist>
+                <input type="hidden" id="itemId" name="itemId" />
               </div>
+              <p role="status" data-receive-info class="min-h-7 text-xl font-bold">
+                Нужно: —
+              </p>
               <div class="flex flex-col gap-1">
                 <label for="amount" class={labelClass}>
                   Сколько получили
@@ -153,3 +157,32 @@ const heading = "План закупок: приёмка товара";
     )}
   </main>
 </PanelLayout>
+
+<script>
+  const input = document.getElementById("item");
+  const hiddenId = document.getElementById("itemId");
+  const list = document.getElementById("receive-names");
+  const info = document.querySelector("[data-receive-info]");
+  if (
+    input instanceof HTMLInputElement &&
+    hiddenId instanceof HTMLInputElement &&
+    list instanceof HTMLDataListElement
+  ) {
+    const check = () => {
+      const text = input.value.trim();
+      const found = [...list.options].filter((option) => option.value === text);
+      const one = found.length === 1 ? found[0] : null;
+      hiddenId.value = one?.dataset.id ?? "";
+      input.setCustomValidity(
+        one
+          ? ""
+          : found.length > 1
+            ? "Есть несколько позиций с таким названием. Переименуйте одну из них."
+            : "Выберите позицию из списка.",
+      );
+      if (info) info.textContent = one?.dataset.remaining ?? "Нужно: —";
+    };
+    input.addEventListener("input", check);
+    check();
+  }
+</script>
