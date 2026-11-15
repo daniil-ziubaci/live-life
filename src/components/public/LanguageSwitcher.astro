@@ -16,7 +16,7 @@ const codes = [...LOCALES].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
 
 {variant === "list" ? (
   <nav aria-label={t("language")}>
-    <ul class="grid grid-cols-3 gap-2">
+    <ul class="grid grid-cols-3 gap-1 rounded-full bg-(--hover) p-1">
       {codes.map((code) => (
         <li>
           <a
@@ -25,10 +25,10 @@ const codes = [...LOCALES].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
             hreflang={code}
             aria-current={locale === code ? "true" : undefined}
             class:list={[
-              "flex min-h-12 items-center justify-center rounded-md border px-3 font-medium transition-colors duration-200",
+              "flex min-h-11 items-center justify-center rounded-full px-3 transition-colors duration-200",
               locale === code
-                ? "border-(--accent) bg-(--accent) font-bold text-(--accent-contrast)"
-                : "border-(--border) hover:bg-(--hover) hover:text-(--accent)",
+                ? "bg-(--surface) font-bold text-(--accent) shadow-sm"
+                : "font-medium hover:text-(--accent)",
             ]}
           >
             {LABELS[code]}
