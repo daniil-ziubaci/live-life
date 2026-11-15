@@ -1,8 +1,5 @@
 import { findContactError } from "@/lib/findContactError";
-import {
-  PROJECT_HELP_KINDS,
-  type ProjectHelpKind,
-} from "@/lib/projectHelpKinds";
+import { PROJECT_HELP_KINDS, type ProjectHelpKind } from "@/lib/projectHelpKinds";
 
 export const PROJECT_LIMITS = {
   title: 120,
@@ -60,17 +57,10 @@ export function parseProjectFields(formData: FormData): ParsedProject {
   if (totalText || doneText || unitText) {
     const total = Number(totalText);
     const done = Number(doneText);
-    if (
-      !totalText ||
-      !doneText ||
-      !unitText ||
-      !Number.isInteger(total) ||
-      !Number.isInteger(done)
-    ) {
+    if (!totalText || !doneText || !unitText || !Number.isInteger(total) || !Number.isInteger(done)) {
       return {
         ok: false,
-        error:
-          "Заполните все три поля счёта целыми числами или оставьте их пустыми.",
+        error: "Заполните все три поля счёта целыми числами или оставьте их пустыми.",
       };
     }
     if (total < 1 || total > PROJECT_LIMITS.progressMax) {
@@ -113,9 +103,7 @@ export function parseProjectFields(formData: FormData): ParsedProject {
   }
 
   const submitted = formData.getAll("help_kinds");
-  const helpKinds = PROJECT_HELP_KINDS.filter((kind) =>
-    submitted.includes(kind),
-  );
+  const helpKinds = PROJECT_HELP_KINDS.filter((kind) => submitted.includes(kind));
   if (helpKinds.length === 0) {
     return { ok: false, error: "Отметьте, чем можно помочь." };
   }

@@ -11,7 +11,9 @@ const VOLUNTEER_PASSWORD = "local-test-password";
 
 const host = URL.canParse(url) ? new URL(url).hostname : "";
 if (host !== "127.0.0.1" && host !== "localhost") {
-  console.error(`Отказ: SUPABASE_URL должен указывать на локальную базу (127.0.0.1 или localhost), а сейчас: «${host || "не задан"}».`);
+  console.error(
+    `Отказ: SUPABASE_URL должен указывать на локальную базу (127.0.0.1 или localhost), а сейчас: «${host || "не задан"}».`,
+  );
   console.error("Запуск: node --env-file=.dev.vars scripts/seed-local.ts");
   process.exit(1);
 }
@@ -45,13 +47,24 @@ if (photos.length === 0) {
 }
 
 async function upload(path: string, body: Buffer, contentType: string) {
-  must(await supabase.storage.from("pet-photos").upload(path, body, { contentType, upsert: true, cacheControl: "31536000" }), `загрузка ${path}`);
+  must(
+    await supabase.storage
+      .from("pet-photos")
+      .upload(path, body, { contentType, upsert: true, cacheControl: "31536000" }),
+    `загрузка ${path}`,
+  );
 }
 
 async function photoSet(source: string, base: string) {
   const input = readFileSync(`${GALLERY}/${source}`);
-  const full = await sharp(input).resize(1600, 1600, { fit: "inside", withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
-  const card = await sharp(input).resize(800, 800, { fit: "inside", withoutEnlargement: true }).webp({ quality: 75 }).toBuffer();
+  const full = await sharp(input)
+    .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 80 })
+    .toBuffer();
+  const card = await sharp(input)
+    .resize(800, 800, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 75 })
+    .toBuffer();
   const preview = await sharp(input).resize(1200, 630, { fit: "cover" }).jpeg({ quality: 80 }).toBuffer();
   await upload(`${base}.webp`, full, "image/webp");
   await upload(`${base}-card.webp`, card, "image/webp");
@@ -110,15 +123,65 @@ const yearsAgo = (years: number, months = 0) => {
   return date.toISOString().slice(0, 10);
 };
 type Size = "мелкая" | "средняя" | "крупная";
-const pets: { name: string; sex: "мальчик" | "девочка"; size: Size; age: [number, number]; approximate: boolean; status: string; treatment?: boolean; enclosure?: string }[] = [
-  { name: "Барсик", sex: "мальчик", size: "средняя", age: [3, 0], approximate: true, status: "ищет дом", enclosure: "А1" },
-  { name: "Рекс", sex: "мальчик", size: "крупная", age: [5, 2], approximate: false, status: "ищет дом", enclosure: "А2" },
+const pets: {
+  name: string;
+  sex: "мальчик" | "девочка";
+  size: Size;
+  age: [number, number];
+  approximate: boolean;
+  status: string;
+  treatment?: boolean;
+  enclosure?: string;
+}[] = [
+  {
+    name: "Барсик",
+    sex: "мальчик",
+    size: "средняя",
+    age: [3, 0],
+    approximate: true,
+    status: "ищет дом",
+    enclosure: "А1",
+  },
+  {
+    name: "Рекс",
+    sex: "мальчик",
+    size: "крупная",
+    age: [5, 2],
+    approximate: false,
+    status: "ищет дом",
+    enclosure: "А2",
+  },
   { name: "Альма", sex: "девочка", size: "средняя", age: [2, 6], approximate: false, status: "ищет дом" },
-  { name: "Жучка", sex: "девочка", size: "мелкая", age: [1, 3], approximate: false, status: "ищет дом", enclosure: "Б1" },
+  {
+    name: "Жучка",
+    sex: "девочка",
+    size: "мелкая",
+    age: [1, 3],
+    approximate: false,
+    status: "ищет дом",
+    enclosure: "Б1",
+  },
   { name: "Гром", sex: "мальчик", size: "крупная", age: [7, 0], approximate: true, status: "ищет дом" },
-  { name: "Дымка", sex: "девочка", size: "средняя", age: [4, 0], approximate: true, status: "ищет дом", treatment: true },
+  {
+    name: "Дымка",
+    sex: "девочка",
+    size: "средняя",
+    age: [4, 0],
+    approximate: true,
+    status: "ищет дом",
+    treatment: true,
+  },
   { name: "Тузик", sex: "мальчик", size: "мелкая", age: [0, 8], approximate: false, status: "ищет дом" },
-  { name: "Ночка", sex: "девочка", size: "крупная", age: [6, 5], approximate: false, status: "на лечении", treatment: true, enclosure: "Л1" },
+  {
+    name: "Ночка",
+    sex: "девочка",
+    size: "крупная",
+    age: [6, 5],
+    approximate: false,
+    status: "на лечении",
+    treatment: true,
+    enclosure: "Л1",
+  },
   { name: "Рыжик", sex: "мальчик", size: "средняя", age: [3, 4], approximate: false, status: "на лечении" },
   { name: "Снежок", sex: "мальчик", size: "крупная", age: [2, 0], approximate: true, status: "в процессе" },
   { name: "Найда", sex: "девочка", size: "средняя", age: [9, 0], approximate: true, status: "ищет дом" },
@@ -165,7 +228,14 @@ const needs: { name: string; category: string; unit: string; remaining: number; 
 ];
 must(
   await supabase.from("purchase_items").insert(
-    needs.map((need) => ({ name: need.name, category: need.category, unit: need.unit, remaining: need.remaining, is_urgent: need.urgent ?? false, note: need.note ?? null })),
+    needs.map((need) => ({
+      name: need.name,
+      category: need.category,
+      unit: need.unit,
+      remaining: need.remaining,
+      is_urgent: need.urgent ?? false,
+      note: need.note ?? null,
+    })),
   ),
   "нужды",
 );
@@ -174,11 +244,20 @@ console.log(`Нужды: ${needs.length}.`);
 const projectPhotoPath = `projects/${crypto.randomUUID()}.webp`;
 await upload(
   projectPhotoPath,
-  await sharp(readFileSync(`${GALLERY}/${photos[photos.length - 1]}`)).resize(1600, 1600, { fit: "inside", withoutEnlargement: true }).webp({ quality: 80 }).toBuffer(),
+  await sharp(readFileSync(`${GALLERY}/${photos[photos.length - 1]}`))
+    .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 80 })
+    .toBuffer(),
   "image/webp",
 );
 const projects: Database["public"]["Tables"]["projects"]["Insert"][] = [
-  { title: "Программа стерилизации", description: "Стерилизуем уличных животных.\n- Кошки\n- Собаки", help_kinds: ["money"], status: "идёт", is_pinned: true },
+  {
+    title: "Программа стерилизации",
+    description: "Стерилизуем уличных животных.\n- Кошки\n- Собаки",
+    help_kinds: ["money"],
+    status: "идёт",
+    is_pinned: true,
+  },
   {
     title: "Тёплые будки",
     description: "Строим будки к зиме.",
@@ -197,7 +276,11 @@ for (const project of projects) {
 }
 console.log("Проекты: 3 (один закреплён, один с фото и счётом дел, один завершён).");
 
-const { data: created, error: createError } = await supabase.auth.admin.createUser({ email: VOLUNTEER_EMAIL, password: VOLUNTEER_PASSWORD, email_confirm: true });
+const { data: created, error: createError } = await supabase.auth.admin.createUser({
+  email: VOLUNTEER_EMAIL,
+  password: VOLUNTEER_PASSWORD,
+  email_confirm: true,
+});
 if (createError || !created.user) {
   console.error(`Ошибка (волонтёр): ${createError?.message ?? "нет пользователя"}`);
   process.exit(1);

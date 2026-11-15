@@ -18,9 +18,9 @@ for (const locale of LOCALES) {
         await page.goto(`/${locale}${path}`);
       }
       const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-      expect(
-        results.violations.map((v) => `${path}: ${v.id} (${v.impact}) ${v.nodes[0].target.join(" ")}`),
-      ).toEqual([]);
+      expect(results.violations.map((v) => `${path}: ${v.id} (${v.impact}) ${v.nodes[0].target.join(" ")}`)).toEqual(
+        [],
+      );
       const title = await page.title();
       expect(titles.get(title), `title "${title}" of ${path} is also used by ${titles.get(title)}`).toBeUndefined();
       titles.set(title, path);
@@ -69,7 +69,10 @@ test("old addresses with the shelter slug redirect permanently", async ({ reques
   for (const [from, status, to] of cases) {
     const response = await request.get(from, { maxRedirects: 0 });
     expect(response.status(), from).toBe(status);
-    expect(new URL(response.headers().location, "http://x").pathname + new URL(response.headers().location, "http://x").search).toBe(to);
+    expect(
+      new URL(response.headers().location, "http://x").pathname +
+        new URL(response.headers().location, "http://x").search,
+    ).toBe(to);
   }
   expect((await request.get("/ru/shelter/other-shelter", { maxRedirects: 0 })).status()).toBe(404);
 });
@@ -103,7 +106,9 @@ test("a missing card photo falls back to the full photo, a missing photo leaves 
   await page.goto("/ru/catalog");
   const first = page.locator("article img").first();
   await expect(first).toHaveAttribute("src", /\/photo\.(webp|jpg)$|\/[0-9a-f-]{36}\.(webp|jpg)$/);
-  await expect.poll(() => first.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  await expect
+    .poll(() => first.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0))
+    .toBe(true);
 
   await page.route(/\/storage\/v1\/object\/public\//, (route) => route.fulfill({ status: 404, body: "" }));
   await page.goto("/ru/catalog");

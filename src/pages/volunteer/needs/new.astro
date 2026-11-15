@@ -22,24 +22,22 @@ const heading = "Добавить позицию в план закупок";
 <PanelLayout title={heading}>
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-1 pb-8">
     <h1 class="text-3xl font-bold wrap-break-word sm:mx-auto sm:w-half-gap sm:text-center">{heading}</h1>
-    {
-      volunteer ? (
-        <NeedForm
-          action="/volunteer/needs/new"
-          mode="new"
-          error={error}
-          values={{
-            name: values.name ?? "",
-            category: values.category ?? "",
-            unit: values.unit ?? "",
-            quantity: values.quantity ?? "",
-            note: values.note ?? "",
-            isUrgent: values.is_urgent === "on",
-          }}
-        />
-      ) : (
-        <p role="alert">{NOT_A_VOLUNTEER}</p>
-      )
-    }
+    {volunteer ? (
+      <NeedForm
+        action="/volunteer/needs/new"
+        mode="new"
+        error={error}
+        values={{
+          name: values.name ?? "",
+          category: values.category ?? "",
+          unit: values.unit ?? "",
+          quantity: values.quantity ?? "",
+          note: values.note ?? "",
+          isUrgent: values.is_urgent === "on",
+        }}
+      />
+    ) : (
+      <p role="alert">{NOT_A_VOLUNTEER}</p>
+    )}
   </main>
 </PanelLayout>

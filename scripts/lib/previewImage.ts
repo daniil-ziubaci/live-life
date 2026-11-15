@@ -11,10 +11,7 @@ export async function makePreviewJpeg(input: Buffer): Promise<Buffer> {
     position: "centre",
   });
 
-  let result = await base
-    .clone()
-    .jpeg({ quality: QUALITIES[0], mozjpeg: true })
-    .toBuffer();
+  let result = await base.clone().jpeg({ quality: QUALITIES[0], mozjpeg: true }).toBuffer();
   for (const quality of QUALITIES.slice(1)) {
     if (result.length <= MAX_BYTES) break;
     result = await base.clone().jpeg({ quality, mozjpeg: true }).toBuffer();

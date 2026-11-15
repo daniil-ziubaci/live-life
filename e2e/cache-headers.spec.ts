@@ -16,7 +16,15 @@ test("the language redirect on / is never cached and varies by language", async 
 });
 
 test("the panel, sign-in, auth and API are never stored", async ({ request }) => {
-  for (const path of ["/login", "/volunteer", "/volunteer/needs", "/auth/set-password", "/auth/confirm", "/api/health", "/api/cron/translate"]) {
+  for (const path of [
+    "/login",
+    "/volunteer",
+    "/volunteer/needs",
+    "/auth/set-password",
+    "/auth/confirm",
+    "/api/health",
+    "/api/cron/translate",
+  ]) {
     const response = await request.get(path, { maxRedirects: 0 });
     expect(response.headers()["cache-control"], path).toBe("no-store");
     expect(response.headers()["cloudflare-cdn-cache-control"], path).toBe("no-store");
@@ -27,7 +35,9 @@ test("public pages are cached for a minute under the public tag", async ({ reque
   for (const path of ["/ru", "/ro/catalog", "/en/needs", "/ru/projects", "/ru/about", "/ru/privacy"]) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
-    expect(response.headers()["cloudflare-cdn-cache-control"], path).toBe("public, max-age=60, stale-while-revalidate=60");
+    expect(response.headers()["cloudflare-cdn-cache-control"], path).toBe(
+      "public, max-age=60, stale-while-revalidate=60",
+    );
     expect(response.headers()["cache-tag"], path).toContain("public");
     expect(response.headers()["set-cookie"], path).toBeUndefined();
   }

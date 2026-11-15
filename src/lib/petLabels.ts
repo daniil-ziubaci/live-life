@@ -2,7 +2,7 @@ const statusKeys: Record<string, string> = {
   "ищет дом": "looking",
   "в процессе": "pending",
   "на лечении": "treatment",
-  "пристроен": "adopted",
+  пристроен: "adopted",
   "снят с учёта": "removed",
 };
 

@@ -1,6 +1,4 @@
-export type DescriptionBlock =
-  | { type: "paragraph"; lines: string[] }
-  | { type: "list"; items: string[] };
+export type DescriptionBlock = { type: "paragraph"; lines: string[] } | { type: "list"; items: string[] };
 
 export function parseDescription(text: string): DescriptionBlock[] {
   const blocks: DescriptionBlock[] = [];

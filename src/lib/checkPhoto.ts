@@ -23,11 +23,7 @@ function ascii(bytes: Uint8Array, start: number, length: number): string {
 }
 
 function readWebp(bytes: Uint8Array): Header | null {
-  if (
-    bytes.length < 30 ||
-    ascii(bytes, 0, 4) !== "RIFF" ||
-    ascii(bytes, 8, 4) !== "WEBP"
-  ) {
+  if (bytes.length < 30 || ascii(bytes, 0, 4) !== "RIFF" || ascii(bytes, 8, 4) !== "WEBP") {
     return null;
   }
   const chunk = ascii(bytes, 12, 4);
@@ -49,11 +45,7 @@ function readWebp(bytes: Uint8Array): Header | null {
     return {
       format: "webp",
       width: 1 + (((bytes[22] & 0x3f) << 8) | bytes[21]),
-      height:
-        1 +
-        (((bytes[24] & 0x0f) << 10) |
-          (bytes[23] << 2) |
-          ((bytes[22] & 0xc0) >> 6)),
+      height: 1 + (((bytes[24] & 0x0f) << 10) | (bytes[23] << 2) | ((bytes[22] & 0xc0) >> 6)),
       hasMetadata: false,
     };
   }
@@ -73,9 +65,7 @@ function readWebp(bytes: Uint8Array): Header | null {
   return null;
 }
 
-const JPEG_FRAME_MARKERS = new Set([
-  0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf,
-]);
+const JPEG_FRAME_MARKERS = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
 
 function readJpeg(bytes: Uint8Array): Header | null {
   if (bytes[0] !== 0xff || bytes[1] !== 0xd8) {
@@ -105,10 +95,7 @@ function readJpeg(bytes: Uint8Array): Header | null {
     }
     if (marker === 0xe1) {
       const label = ascii(bytes, offset + 4, Math.min(length - 2, 29));
-      if (
-        label.startsWith("Exif") ||
-        label.startsWith("http://ns.adobe.com/xap/1.0/")
-      ) {
+      if (label.startsWith("Exif") || label.startsWith("http://ns.adobe.com/xap/1.0/")) {
         hasMetadata = true;
       }
     }

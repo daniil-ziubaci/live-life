@@ -1,4 +1,3 @@
-
 import { buildTranslations } from "@/lib/buildTranslations";
 import { LOCALES } from "@/lib/i18n";
 import { translateCity } from "@/lib/cityNames";
@@ -24,11 +23,7 @@ type ShelterTexts = {
   translations: Json;
 };
 
-function withCity(
-  translations: Translations,
-  city: string | null,
-  sourceLanguage: string,
-): Translations {
+function withCity(translations: Translations, city: string | null, sourceLanguage: string): Translations {
   if (!city) {
     return translations;
   }
@@ -38,18 +33,13 @@ function withCity(
     if (language === sourceLanguage) {
       continue;
     }
-    const text =
-      translateCity(city, sourceLanguage, language) ??
-      localizeName(city, language);
+    const text = translateCity(city, sourceLanguage, language) ?? localizeName(city, language);
     byLanguage[language] = { text, hash };
   }
   return { ...translations, city: byLanguage };
 }
 
-export async function shelterTranslations(
-  shelter: ShelterTexts,
-  sourceLanguage: string,
-): Promise<Translations> {
+export async function shelterTranslations(shelter: ShelterTexts, sourceLanguage: string): Promise<Translations> {
   const translations = await buildTranslations({
     sourceLanguage,
     texts: {

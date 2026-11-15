@@ -14,7 +14,7 @@ const SECURITY_HEADERS = [
 ] as const;
 const LOGIN_BODY_LIMIT = 10 * 1024;
 const BODY_LIMIT = 20 * 1024 * 1024;
-const TWO_FACTOR_PATHS =new Set(["/volunteer/2fa", "/volunteer/2fa/verify", "/volunteer/logout"]);
+const TWO_FACTOR_PATHS = new Set(["/volunteer/2fa", "/volunteer/2fa/verify", "/volunteer/logout"]);
 
 function redirect(location: string, status: 301 | 302 | 303 | 307 | 308) {
   return new Response(null, { status, headers: { Location: location } });
@@ -25,7 +25,10 @@ function tooLarge(request: Request, path: string): Response | null {
   const length = Number(request.headers.get("content-length") ?? "0");
   const limit = path === "/login" ? LOGIN_BODY_LIMIT : BODY_LIMIT;
   if (!Number.isFinite(length) || length <= limit) return null;
-  const text = path === "/login" ? "Запрос слишком большой: для входа достаточно почты и пароля." : "Запрос слишком большой: можно отправить не больше 20 МБ.";
+  const text =
+    path === "/login"
+      ? "Запрос слишком большой: для входа достаточно почты и пароля."
+      : "Запрос слишком большой: можно отправить не больше 20 МБ.";
   return new Response(text, { status: 413, headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
 
@@ -88,7 +91,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const { data } = await context.locals.supabase.auth.getClaims();
     const claims = data?.claims ?? null;
     context.locals.claims = claims
-      ? { sub: claims.sub, aal: typeof claims.aal === "string" ? claims.aal : undefined, email: typeof claims.email === "string" ? claims.email : undefined }
+      ? {
+          sub: claims.sub,
+          aal: typeof claims.aal === "string" ? claims.aal : undefined,
+          email: typeof claims.email === "string" ? claims.email : undefined,
+        }
       : null;
 
     if (path.startsWith("/volunteer")) {

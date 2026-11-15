@@ -22,17 +22,13 @@ const sizeKey = pet.size ? getSizeKey(pet.size) : undefined;
 const Heading = headingLevel;
 ---
 
-<article
-  class="group relative flex flex-col overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-sm transition duration-300 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-(--focus) hover:shadow-2xl motion-safe:hover:-translate-y-1.5"
->
+<article class="group relative flex flex-col overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-sm transition duration-300 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-(--focus) hover:shadow-2xl motion-safe:hover:-translate-y-1.5">
   <div class="relative aspect-4/3">
-    {
-      (pet.status !== PET_STATUS_LOOKING || pet.needsTreatmentSince) && (
-        <div class="absolute top-2.5 left-2.5 z-10 flex flex-col items-start gap-1.5">
-          <PetBadges locale={locale} status={pet.status} needsTreatmentSince={pet.needsTreatmentSince} />
-        </div>
-      )
-    }
+    {(pet.status !== PET_STATUS_LOOKING || pet.needsTreatmentSince) && (
+      <div class="absolute top-2.5 left-2.5 z-10 flex flex-col items-start gap-1.5">
+        <PetBadges locale={locale} status={pet.status} needsTreatmentSince={pet.needsTreatmentSince} />
+      </div>
+    )}
     <img
       src={cardCopyOf(pet.photo.url)}
       data-fallback={pet.photo.url}
@@ -59,14 +55,12 @@ const Heading = headingLevel;
       </div>
     </dl>
     <div class="flex flex-wrap items-end gap-x-2 gap-y-1">
-      {
-        sizeKey && (
-          <dl class="flex gap-1 text-(--muted)">
-            <dt>{t("size")}</dt>
-            <dd>{t(`sizeValue.${sizeKey}`)}</dd>
-          </dl>
-        )
-      }
+      {sizeKey && (
+        <dl class="flex gap-1 text-(--muted)">
+          <dt>{t("size")}</dt>
+          <dd>{t(`sizeValue.${sizeKey}`)}</dd>
+        </dl>
+      )}
       <a
         href={`/${locale}/catalog/${pet.id}`}
         aria-label={t("moreLabel", { name: pet.name })}

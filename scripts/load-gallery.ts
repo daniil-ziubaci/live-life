@@ -73,9 +73,7 @@ for (const [position, entry] of entries.entries()) {
   console.log(`${entry.file} -> ${name}.webp`);
 }
 
-const { error: upsertError } = await supabase
-  .from("gallery_photos")
-  .upsert(rows, { onConflict: "source_name" });
+const { error: upsertError } = await supabase.from("gallery_photos").upsert(rows, { onConflict: "source_name" });
 
 if (upsertError) {
   console.error(upsertError.message);

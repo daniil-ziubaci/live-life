@@ -1,13 +1,6 @@
-type Translate = (
-  key: string,
-  values?: Record<string, string | number>,
-) => string;
+type Translate = (key: string, values?: Record<string, string | number>) => string;
 
-function buildAge(
-  months: number,
-  isApproximate: boolean,
-  t: Translate,
-): string {
+function buildAge(months: number, isApproximate: boolean, t: Translate): string {
   if (months < 12) {
     return t("months", { count: months });
   }
@@ -34,11 +27,7 @@ function buildAge(
   return t("years", { count: fullYears });
 }
 
-export function formatAge(
-  months: number,
-  isApproximate: boolean,
-  t: Translate,
-): string {
+export function formatAge(months: number, isApproximate: boolean, t: Translate): string {
   const text = buildAge(months, isApproximate, t);
   if (isApproximate) {
     return `≈${text}`;

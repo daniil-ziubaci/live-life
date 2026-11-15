@@ -17,11 +17,7 @@ export default {
     if (path.startsWith("/api/cron/") && env.CRON_SECRET) {
       headers.set("authorization", `Bearer ${env.CRON_SECRET}`);
     }
-    const response = await handle(
-      new Request(new URL(path, "https://scheduled.invalid"), { headers }),
-      env,
-      ctx,
-    );
+    const response = await handle(new Request(new URL(path, "https://scheduled.invalid"), { headers }), env, ctx);
     const body = (await response.text()).slice(0, 500);
     console.log(`${controller.cron} ${path} -> ${response.status} ${body}`);
     if (!response.ok) {

@@ -10,14 +10,12 @@ interface Props {
 const { text, links, class: linkClass = "font-semibold text-(--accent) underline underline-offset-2" } = Astro.props;
 ---
 
-{
-  richParts(text).map((part) =>
-    part.tag && links[part.tag] ? (
-      <a href={links[part.tag]} class={linkClass}>
-        {part.text}
-      </a>
-    ) : (
-      part.text
-    ),
-  )
-}
+{richParts(text).map((part) =>
+  part.tag && links[part.tag] ? (
+    <a href={links[part.tag]} class={linkClass}>
+      {part.text}
+    </a>
+  ) : (
+    part.text
+  ),
+)}

@@ -11,13 +11,9 @@ type PurchaseItemFields = {
   note: string | null;
 };
 
-export type ParsePurchaseItemFieldsResult =
-  | { ok: true; fields: PurchaseItemFields }
-  | { ok: false; error: string };
+export type ParsePurchaseItemFieldsResult = { ok: true; fields: PurchaseItemFields } | { ok: false; error: string };
 
-export function parsePurchaseItemFields(
-  formData: FormData,
-): ParsePurchaseItemFieldsResult {
+export function parsePurchaseItemFields(formData: FormData): ParsePurchaseItemFieldsResult {
   const text = (field: string) => {
     const value = formData.get(field);
     return typeof value === "string" ? value.trim() : "";

@@ -26,25 +26,50 @@ const inviteExpired = Astro.url.searchParams.get("error") === "invite";
 
 <PanelLayout title="Вход для волонтёров" header={false}>
   <AuthPage title="Вход для волонтёров">
-    {
-      inviteExpired && (
-        <p role="alert" class={errorClass}>
-          Ссылка приглашения устарела или уже использована. Попросите координатора отправить новую.
-        </p>
-      )
-    }
+    {inviteExpired && (
+      <p role="alert" class={errorClass}>
+        Ссылка приглашения устарела или уже использована. Попросите координатора отправить новую.
+      </p>
+    )}
     <form method="post" action="/login" class={cardClass}>
-      <p role="alert" class={errorClass}>{error}</p>
+      <p role="alert" class={errorClass}>
+        {error}
+      </p>
       <div class="flex flex-col gap-1">
-        <label for="email" class={labelClass}>Почта</label>
-        <input id="email" name="email" type="email" value={email} autocomplete="email" autocapitalize="none" spellcheck="false" required class={fieldClass} />
+        <label for="email" class={labelClass}>
+          Почта
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={email}
+          autocomplete="email"
+          autocapitalize="none"
+          spellcheck="false"
+          required
+          class={fieldClass}
+        />
       </div>
       <div class="flex flex-col gap-1">
-        <label for="password" class={labelClass}>Пароль</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required class={fieldClass} />
+        <label for="password" class={labelClass}>
+          Пароль
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          class={fieldClass}
+        />
       </div>
-      <button type="submit" class={primaryButtonClass} data-pending="Входим…">Войти</button>
+      <button type="submit" class={primaryButtonClass} data-pending="Входим…">
+        Войти
+      </button>
     </form>
-    <a href="/ru/privacy" class="flex h-10 items-center justify-center text-(--muted) underline">Политика конфиденциальности</a>
+    <a href="/ru/privacy" class="flex h-10 items-center justify-center text-(--muted) underline">
+      Политика конфиденциальности
+    </a>
   </AuthPage>
 </PanelLayout>

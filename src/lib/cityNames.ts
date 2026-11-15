@@ -27,11 +27,7 @@ const CITIES: Record<string, Record<string, string>> = {
   фалешты: { ro: "Fălești", en: "Falesti" },
 };
 
-export function translateCity(
-  city: string,
-  sourceLanguage: string,
-  to: string,
-): string | null {
+export function translateCity(city: string, sourceLanguage: string, to: string): string | null {
   if (sourceLanguage !== "ru") {
     return null;
   }

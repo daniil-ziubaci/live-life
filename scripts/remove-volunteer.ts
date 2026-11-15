@@ -21,11 +21,17 @@ async function findUser(address: string) {
 
 const user = await findUser(email);
 if (!user) {
-  console.error(`Нет пользователя с почтой ${email} (среди первых 1000). Проверьте написание почты. Ничего не изменено.`);
+  console.error(
+    `Нет пользователя с почтой ${email} (среди первых 1000). Проверьте написание почты. Ничего не изменено.`,
+  );
   process.exit(1);
 }
 
-const { data: volunteer, error: volunteerError } = await supabase.from("volunteers").select("user_id").eq("user_id", user.id).maybeSingle();
+const { data: volunteer, error: volunteerError } = await supabase
+  .from("volunteers")
+  .select("user_id")
+  .eq("user_id", user.id)
+  .maybeSingle();
 if (volunteerError) {
   console.error(volunteerError.message);
   process.exit(1);
@@ -35,7 +41,9 @@ if (!volunteer) {
   process.exit(1);
 }
 
-console.log(`Будет удалён вход ${email}: пароль, второй фактор и сессии. Запись в списке волонтёров удалится вместе с ним.`);
+console.log(
+  `Будет удалён вход ${email}: пароль, второй фактор и сессии. Запись в списке волонтёров удалится вместе с ним.`,
+);
 console.log("Животные, проекты и закупки, которые он вносил, останутся.");
 stopUnlessApply(apply);
 
@@ -45,10 +53,16 @@ if (deleteError) {
   process.exit(1);
 }
 
-const { data: stillVolunteer, error: checkError } = await supabase.from("volunteers").select("user_id").eq("user_id", user.id).maybeSingle();
+const { data: stillVolunteer, error: checkError } = await supabase
+  .from("volunteers")
+  .select("user_id")
+  .eq("user_id", user.id)
+  .maybeSingle();
 const stillUser = await findUser(email);
 if (checkError || stillVolunteer || stillUser) {
-  console.error("Проверка не прошла: вход или запись волонтёра ещё есть. Посмотрите в Supabase → Authentication → Users.");
+  console.error(
+    "Проверка не прошла: вход или запись волонтёра ещё есть. Посмотрите в Supabase → Authentication → Users.",
+  );
   process.exit(1);
 }
 console.log(`Готово: входа ${email} больше нет, в списке волонтёров его нет.`);

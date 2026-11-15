@@ -25,10 +25,15 @@ if (signInError) {
 }
 const { data: enrolled, error: enrollError } = await client.auth.mfa.enroll({ factorType: "totp" });
 if (enrollError) {
-  console.error(`Не удалось настроить второй фактор (он уже настроен? повторите seed-local.ts на чистой базе): ${enrollError.message}`);
+  console.error(
+    `Не удалось настроить второй фактор (он уже настроен? повторите seed-local.ts на чистой базе): ${enrollError.message}`,
+  );
   process.exit(1);
 }
-const { error: verifyError } = await client.auth.mfa.challengeAndVerify({ factorId: enrolled.id, code: totp(enrolled.totp.secret) });
+const { error: verifyError } = await client.auth.mfa.challengeAndVerify({
+  factorId: enrolled.id,
+  code: totp(enrolled.totp.secret),
+});
 if (verifyError) {
   console.error(`Не удалось подтвердить второй фактор: ${verifyError.message}`);
   process.exit(1);

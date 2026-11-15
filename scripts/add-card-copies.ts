@@ -8,7 +8,11 @@ const bucket = supabase.storage.from("pet-photos");
 
 const paths: string[] = [];
 for (let from = 0; ; from += 1000) {
-  const { data, error } = await supabase.from("pets").select("id, photo_url").order("id").range(from, from + 999);
+  const { data, error } = await supabase
+    .from("pets")
+    .select("id, photo_url")
+    .order("id")
+    .range(from, from + 999);
   if (error || !data) {
     console.error(error?.message ?? "Не удалось прочитать животных.");
     process.exit(1);
@@ -40,7 +44,10 @@ for (const path of paths) {
     failed += 1;
     continue;
   }
-  const { error: uploadError } = await bucket.upload(cardCopyOf(path), card, { contentType: "image/webp", cacheControl: "31536000" });
+  const { error: uploadError } = await bucket.upload(cardCopyOf(path), card, {
+    contentType: "image/webp",
+    cacheControl: "31536000",
+  });
   if (!uploadError) created += 1;
   else if (/already exists/i.test(uploadError.message)) skipped += 1;
   else {

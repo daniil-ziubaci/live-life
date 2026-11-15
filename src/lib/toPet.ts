@@ -10,15 +10,8 @@ type PetRow = Database["public"]["Tables"]["pets"]["Row"];
 export function toPet(row: PetRow, locale: string): Pet {
   const translations = readTranslations(row.translations);
   const pick = (field: string, original: string) => {
-    const text = pickTranslation(
-      translations,
-      field,
-      locale,
-      textHash(row.name, original),
-    );
-    return text === null
-      ? { text: original, translated: false }
-      : { text, translated: true };
+    const text = pickTranslation(translations, field, locale, textHash(row.name, original));
+    return text === null ? { text: original, translated: false } : { text, translated: true };
   };
   const description = pick("description", row.description);
   const health = pick("health", row.health);

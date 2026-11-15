@@ -9,7 +9,11 @@ const BROKEN_BASE_URL = process.env.E2E_BROKEN_BASE_URL ?? "";
 test.describe.configure({ mode: "serial" });
 test.skip(!EMAIL || !PASSWORD || !SECRET, "E2E_EMAIL, E2E_PASSWORD and E2E_TOTP_SECRET are not set");
 
-const copiesOf = (url: string) => [url, url.replace(/\.(webp|jpg)$/, "-card.$1"), url.replace(/\.(webp|jpg)$/, "-og.jpg")];
+const copiesOf = (url: string) => [
+  url,
+  url.replace(/\.(webp|jpg)$/, "-card.$1"),
+  url.replace(/\.(webp|jpg)$/, "-og.jpg"),
+];
 
 async function addAnimal(page: Page, name: string) {
   await page.goto("/volunteer/pets/new");
@@ -29,7 +33,12 @@ async function addAnimal(page: Page, name: string) {
 async function photoOf(page: Page, name: string) {
   await page.goto("/ru/catalog");
   await page.getByRole("link", { name: `Подробнее: ${name}`, exact: true }).click();
-  return (await page.getByRole("img", { name: `Фото ${name}` }).first().getAttribute("src")) ?? "";
+  return (
+    (await page
+      .getByRole("img", { name: `Фото ${name}` })
+      .first()
+      .getAttribute("src")) ?? ""
+  );
 }
 
 async function replacePhoto(page: Page, name: string) {
@@ -107,7 +116,9 @@ test("replacing a photo never deletes the shelter's brand icons", async ({ page 
   const folder = `brand/e2e-${crypto.randomUUID()}`;
   const iconPath = `${folder}/icon-32.webp`;
   const icon = await photo("#224466");
-  expect((await admin.storage.from("pet-photos").upload(iconPath, icon.buffer, { contentType: "image/webp" })).error).toBeNull();
+  expect(
+    (await admin.storage.from("pet-photos").upload(iconPath, icon.buffer, { contentType: "image/webp" })).error,
+  ).toBeNull();
   const iconUrl = admin.storage.from("pet-photos").getPublicUrl(iconPath).data.publicUrl;
   try {
     expect((await admin.from("shelter").update({ brand_path: folder }).eq("id", true)).error).toBeNull();
@@ -117,7 +128,10 @@ test("replacing a photo never deletes the shelter's brand icons", async ({ page 
     await replacePhoto(page, name);
     await expectKept(page, [iconUrl]);
   } finally {
-    await admin.from("shelter").update({ brand_path: shelter?.brand_path ?? null }).eq("id", true);
+    await admin
+      .from("shelter")
+      .update({ brand_path: shelter?.brand_path ?? null })
+      .eq("id", true);
     await admin.storage.from("pet-photos").remove([iconPath]);
   }
 });

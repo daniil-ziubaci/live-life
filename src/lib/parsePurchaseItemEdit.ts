@@ -8,13 +8,9 @@ type PurchaseItemEdit = {
   note: string | null;
 };
 
-export type ParsePurchaseItemEditResult =
-  | { ok: true; fields: PurchaseItemEdit }
-  | { ok: false; error: string };
+export type ParsePurchaseItemEditResult = { ok: true; fields: PurchaseItemEdit } | { ok: false; error: string };
 
-export function parsePurchaseItemEdit(
-  formData: FormData,
-): ParsePurchaseItemEditResult {
+export function parsePurchaseItemEdit(formData: FormData): ParsePurchaseItemEditResult {
   const text = (field: string) => {
     const value = formData.get(field);
     return typeof value === "string" ? value.trim() : "";

@@ -15,9 +15,7 @@ export const VOLUNTEER_STATUS_FILTERS = {
 
 export type VolunteerStatusFilter = keyof typeof VOLUNTEER_STATUS_FILTERS;
 
-export function parseVolunteerStatus(
-  value: string | undefined,
-): VolunteerStatusFilter | undefined {
+export function parseVolunteerStatus(value: string | undefined): VolunteerStatusFilter | undefined {
   const keys = Object.keys(VOLUNTEER_STATUS_FILTERS) as VolunteerStatusFilter[];
   return keys.find((key) => key === value);
 }

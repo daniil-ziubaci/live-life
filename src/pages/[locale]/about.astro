@@ -30,8 +30,13 @@ const photos = (photoRows ?? []).map((row) => ({
 }));
 const photoUrl = shelter.photo_path && shelter.photo_alt ? publicPhotoUrl(shelter.photo_path) : null;
 const paragraphs = shelter.about?.split(/\n{2,}/) ?? [];
-const jsonLd = JSON.stringify(buildShelterJsonLd(shelter, `${SITE_URL.replace(/\/$/, "")}/${locale}/about`)).replace(/</g, "\\u003c");
-const title = shelter.city ? t("titleWithCity", { name: shelter.name, city: shelter.city }) : t("title", { name: shelter.name });
+const jsonLd = JSON.stringify(buildShelterJsonLd(shelter, `${SITE_URL.replace(/\/$/, "")}/${locale}/about`)).replace(
+  /</g,
+  "\\u003c",
+);
+const title = shelter.city
+  ? t("titleWithCity", { name: shelter.name, city: shelter.city })
+  : t("title", { name: shelter.name });
 const description = shelter.about ? truncateText(shelter.about, 155) : t("descriptionFallback", { name: shelter.name });
 const button =
   "inline-flex min-h-11 items-center justify-center rounded-full bg-(--accent) px-5 py-2 font-semibold text-(--accent-contrast) hover:shadow-md";
@@ -42,46 +47,47 @@ const link = "font-semibold text-(--accent) underline";
   <script slot="head" type="application/ld+json" set:html={jsonLd} />
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pt-4 pb-10">
     <section aria-labelledby="about-heading" class="flex flex-col gap-6">
-      <h1 id="about-heading" class="text-center text-2xl font-bold text-balance sm:text-3xl">{shelter.aboutTitle}</h1>
+      <h1 id="about-heading" class="text-center text-2xl font-bold text-balance sm:text-3xl">
+        {shelter.aboutTitle}
+      </h1>
       {photos.length > 0 && <Gallery locale={locale} photos={photos} />}
-      {
-        photos.length === 0 && photoUrl && (
-          <div class="relative aspect-4/3 overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-sm">
-            <img src={photoUrl} alt={shelter.photo_alt ?? ""} class="absolute inset-0 size-full object-contain" />
-          </div>
-        )
-      }
+      {photos.length === 0 && photoUrl && (
+        <div class="relative aspect-4/3 overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-sm">
+          <img src={photoUrl} alt={shelter.photo_alt ?? ""} class="absolute inset-0 size-full object-contain" />
+        </div>
+      )}
       <div class="flex flex-col gap-4 rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-sm">
         <h2 class="text-2xl font-bold">{t("textHeading")}</h2>
-        {
-          shelter.about && (
-            <>
-              <ContentLanguageNote locale={locale} language={contentLanguage} translated={shelter.translated.about} />
-              <div class="*:mb-4 *:last:mb-0 lg:columns-2 lg:gap-10">
-                {paragraphs.map((paragraph) => (
-                  <p lang={shelter.translated.about ? locale : contentLanguage}>{paragraph}</p>
-                ))}
-              </div>
-            </>
-          )
-        }
+        {shelter.about && (
+          <>
+            <ContentLanguageNote locale={locale} language={contentLanguage} translated={shelter.translated.about} />
+            <div class="*:mb-4 *:last:mb-0 lg:columns-2 lg:gap-10">
+              {paragraphs.map((paragraph) => (
+                <p lang={shelter.translated.about ? locale : contentLanguage}>{paragraph}</p>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
-    {
-      shelter.adoption_info && (
-        <section aria-labelledby="adoption-heading" class="flex max-w-3xl flex-col gap-2">
-          <h2 id="adoption-heading" class="text-xl font-bold">
-            {tAdoption("heading")}
-          </h2>
-          <ContentLanguageNote locale={locale} language={contentLanguage} translated={shelter.translated.adoptionInfo} />
-          <p class="whitespace-pre-line" lang={shelter.translated.adoptionInfo ? locale : contentLanguage}>
-            {shelter.adoption_info}
-          </p>
-        </section>
-      )
-    }
-    <section aria-labelledby="join-call-heading" class="flex flex-col gap-6 rounded-2xl bg-(--accent-soft) p-6 shadow-sm">
-      <h2 id="join-call-heading" class="text-center text-2xl font-bold">{t("joinCallHeading")}</h2>
+    {shelter.adoption_info && (
+      <section aria-labelledby="adoption-heading" class="flex max-w-3xl flex-col gap-2">
+        <h2 id="adoption-heading" class="text-xl font-bold">
+          {tAdoption("heading")}
+        </h2>
+        <ContentLanguageNote locale={locale} language={contentLanguage} translated={shelter.translated.adoptionInfo} />
+        <p class="whitespace-pre-line" lang={shelter.translated.adoptionInfo ? locale : contentLanguage}>
+          {shelter.adoption_info}
+        </p>
+      </section>
+    )}
+    <section
+      aria-labelledby="join-call-heading"
+      class="flex flex-col gap-6 rounded-2xl bg-(--accent-soft) p-6 shadow-sm"
+    >
+      <h2 id="join-call-heading" class="text-center text-2xl font-bold">
+        {t("joinCallHeading")}
+      </h2>
       <div class="grid gap-6 md:grid-cols-3">
         <div class="flex flex-col gap-2">
           <h3 class="text-lg font-bold">{t("joinAdoptTitle")}</h3>
@@ -107,13 +113,24 @@ const link = "font-semibold text-(--accent) underline";
         </div>
       </div>
     </section>
-    <section aria-labelledby="join-heading" class="flex flex-col gap-4 rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-sm md:items-center md:text-center">
-      <h2 id="join-heading" class="text-center text-2xl font-bold">{t("joinHeading")}</h2>
+    <section
+      aria-labelledby="join-heading"
+      class="flex flex-col gap-4 rounded-2xl border border-(--border) bg-(--surface) p-6 shadow-sm md:items-center md:text-center"
+    >
+      <h2 id="join-heading" class="text-center text-2xl font-bold">
+        {t("joinHeading")}
+      </h2>
       <p class="max-w-3xl whitespace-pre-line">{t("joinDefault")}</p>
       <div class="flex flex-wrap gap-3 md:justify-center">
-        <a href={`/${locale}/catalog`} class={button}>{t("joinFind")}</a>
-        <a href={`/${locale}/needs`} class={button}>{t("joinHelp")}</a>
-        <a href="#footer-contact-heading" class={button}>{t("joinVolunteer")}</a>
+        <a href={`/${locale}/catalog`} class={button}>
+          {t("joinFind")}
+        </a>
+        <a href={`/${locale}/needs`} class={button}>
+          {t("joinHelp")}
+        </a>
+        <a href="#footer-contact-heading" class={button}>
+          {t("joinVolunteer")}
+        </a>
       </div>
     </section>
   </main>

@@ -13,11 +13,7 @@ export type TranslationInput = {
   dictionary?: (field: string, text: string, to: string) => string | null;
 };
 
-function keepFresh(
-  input: TranslationInput,
-  language: string,
-  result: Translations,
-): [string, string][] {
+function keepFresh(input: TranslationInput, language: string, result: Translations): [string, string][] {
   const stale: [string, string][] = [];
   for (const [field, text] of Object.entries(input.texts)) {
     if (!/\p{L}/u.test(text)) {
@@ -54,9 +50,7 @@ function applyDictionary(
   return stale;
 }
 
-export async function buildTranslations(
-  input: TranslationInput,
-): Promise<Translations> {
+export async function buildTranslations(input: TranslationInput): Promise<Translations> {
   const result: Translations = {};
   let remaining: number | null = null;
 
@@ -74,10 +68,7 @@ export async function buildTranslations(
     if (needed > remaining) {
       continue;
     }
-    const name =
-      input.name === undefined
-        ? undefined
-        : { from: input.name, to: localizeName(input.name, language) };
+    const name = input.name === undefined ? undefined : { from: input.name, to: localizeName(input.name, language) };
     const translated = await translateTexts(
       stale.map(([, text]) => text),
       input.sourceLanguage,

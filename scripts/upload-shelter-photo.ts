@@ -10,7 +10,9 @@ const { apply, args } = splitArgs(process.argv.slice(2));
 const [filePath, alt] = args;
 
 if (!filePath || !alt) {
-  console.error('Использование: node --env-file=.env.coordinator scripts/upload-shelter-photo.ts путь "описание" [--apply]');
+  console.error(
+    'Использование: node --env-file=.env.coordinator scripts/upload-shelter-photo.ts путь "описание" [--apply]',
+  );
   process.exit(1);
 }
 
@@ -35,9 +37,7 @@ if (!raw) {
   process.exit(1);
 }
 
-const processed = await processPhoto(
-  new File([new Uint8Array(raw)], basename(filePath)),
-);
+const processed = await processPhoto(new File([new Uint8Array(raw)], basename(filePath)));
 
 if (!processed) {
   console.error("Нужен снимок в формате jpeg, png или webp.");
@@ -45,15 +45,15 @@ if (!processed) {
 }
 
 const photoPath = `shelter/${randomUUID()}.webp`;
-console.log(`Фото приюта станет ${photoPath} с описанием «${alt}»${shelter.photo_path ? ` (вместо ${shelter.photo_path})` : ""}.`);
+console.log(
+  `Фото приюта станет ${photoPath} с описанием «${alt}»${shelter.photo_path ? ` (вместо ${shelter.photo_path})` : ""}.`,
+);
 stopUnlessApply(apply);
 
-const { error: uploadError } = await supabase.storage
-  .from("pet-photos")
-  .upload(photoPath, processed, {
-    contentType: "image/webp",
-    cacheControl: "31536000",
-  });
+const { error: uploadError } = await supabase.storage.from("pet-photos").upload(photoPath, processed, {
+  contentType: "image/webp",
+  cacheControl: "31536000",
+});
 
 if (uploadError) {
   console.error(`Не удалось загрузить файл: ${uploadError.message}`);
@@ -80,9 +80,7 @@ const { data: updated, error: updateError } = await supabase
   .maybeSingle();
 
 if (updateError || !updated) {
-  console.error(
-    `Файл загружен (${photoPath}), но в профиль не записан: ${updateError?.message ?? "приют не найден"}`,
-  );
+  console.error(`Файл загружен (${photoPath}), но в профиль не записан: ${updateError?.message ?? "приют не найден"}`);
   process.exit(1);
 }
 

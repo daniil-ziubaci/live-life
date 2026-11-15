@@ -10,26 +10,14 @@ type ProjectTexts = {
   translations: Json;
 };
 
-export function localizeProject<T extends ProjectTexts>(
-  project: T,
-  locale: string,
-) {
+export function localizeProject<T extends ProjectTexts>(project: T, locale: string) {
   const translations = readTranslations(project.translations);
   const pick = (field: string, original: string) => {
-    const text = pickTranslation(
-      translations,
-      field,
-      locale,
-      textHash("", original),
-    );
-    return text === null
-      ? { text: original, translated: false }
-      : { text, translated: true };
+    const text = pickTranslation(translations, field, locale, textHash("", original));
+    return text === null ? { text: original, translated: false } : { text, translated: true };
   };
   const pickOptional = (field: string, original: string | null) =>
-    original === null
-      ? { text: null, translated: false }
-      : pick(field, original);
+    original === null ? { text: null, translated: false } : pick(field, original);
 
   const title = pick("title", project.title);
   const description = pick("description", project.description);

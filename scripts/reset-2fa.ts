@@ -20,7 +20,11 @@ if (!user) {
   process.exit(1);
 }
 
-const { data: volunteer, error: volunteerError } = await supabase.from("volunteers").select("user_id").eq("user_id", user.id).maybeSingle();
+const { data: volunteer, error: volunteerError } = await supabase
+  .from("volunteers")
+  .select("user_id")
+  .eq("user_id", user.id)
+  .maybeSingle();
 if (volunteerError) {
   console.error(volunteerError.message);
   process.exit(1);

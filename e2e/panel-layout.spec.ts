@@ -11,7 +11,9 @@ test("the animal list never scrolls sideways and has two columns from 900 px", a
     await page.goto("/volunteer");
     const cards = page.locator("main ul > li");
     expect(await cards.count(), `cards at ${width} px`).toBeGreaterThan(1);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
     expect(overflow, `sideways scroll at ${width} px`).toBe(0);
     const [first, second] = [await cards.nth(0).boundingBox(), await cards.nth(1).boundingBox()];
     const columns = first && second && Math.abs(first.y - second.y) < 1 ? 2 : 1;

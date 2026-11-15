@@ -47,55 +47,75 @@ const isEnabled = (factors?.totp.length ?? 0) > 0;
 
 <PanelLayout title="Настройка двухфакторного входа">
   <AuthPage hasHeader title="Настройка двухфакторного входа">
-    {
-      isEnabled ? (
-        <p class="text-center">Двухфакторный вход уже настроен.</p>
-      ) : enrollment ? (
-        <div class="flex flex-col gap-4">
-          <div role="group" aria-label="Подключение приложения-аутентификатора" class={`${cardClass} items-center`}>
-            <div class="w-fit rounded-xl border border-(--border) bg-white p-3">
-              <img
-                src={enrollment.qrCode}
-                alt="QR-код для приложения-аутентификатора. Если отсканировать не получается, используйте ключ ниже."
-                width="200"
-                height="200"
-              />
-            </div>
-            <details class="flex w-full flex-col items-center gap-2">
-              <summary class={`${secondaryButtonClass} inline-flex items-center`}>Показать ключ</summary>
-              <p class="mt-2 w-full rounded-lg bg-(--hover) px-3 py-2 font-mono break-all select-all">
-                Ключ для ввода вручную: {enrollment.secret}
-              </p>
-            </details>
+    {isEnabled ? (
+      <p class="text-center">Двухфакторный вход уже настроен.</p>
+    ) : enrollment ? (
+      <div class="flex flex-col gap-4">
+        <div role="group" aria-label="Подключение приложения-аутентификатора" class={`${cardClass} items-center`}>
+          <div class="w-fit rounded-xl border border-(--border) bg-white p-3">
+            <img
+              src={enrollment.qrCode}
+              alt="QR-код для приложения-аутентификатора. Если отсканировать не получается, используйте ключ ниже."
+              width="200"
+              height="200"
+            />
           </div>
-          <form method="post" action="/volunteer/2fa" class={cardClass}>
-            <p role="alert" class={errorClass}>{codeError}</p>
-            <input type="hidden" name="intent" value="verify" />
-            <input type="hidden" name="factorId" value={enrollment.factorId} />
-            <input type="hidden" name="qrCode" value={enrollment.qrCode} />
-            <input type="hidden" name="secret" value={enrollment.secret} />
-            <div class="flex flex-col gap-1">
-              <label for="code" class="font-medium">Код из приложения</label>
-              <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required class="h-12 w-full rounded-lg border border-(--accent) bg-(--accent-soft) px-3 text-center text-2xl tracking-code" />
-            </div>
-            <button type="submit" class={primaryButtonClass} data-pending="Проверяем…">Подтвердить</button>
-          </form>
-        </div>
-      ) : (
-        <>
-          <div class="flex flex-col gap-2 text-(--muted)">
-            <p>
-              Чтобы войти в панель приюта, нужен пароль и короткий код из приложения. Так посторонний не попадёт в панель, даже если узнает ваш пароль.
+          <details class="flex w-full flex-col items-center gap-2">
+            <summary class={`${secondaryButtonClass} inline-flex items-center`}>Показать ключ</summary>
+            <p class="mt-2 w-full rounded-lg bg-(--hover) px-3 py-2 font-mono break-all select-all">
+              Ключ для ввода вручную: {enrollment.secret}
             </p>
-            <p>Установите на телефон бесплатное приложение Google Authenticator, нажмите «Начать настройку» и наведите камеру приложения на QR-код.</p>
+          </details>
+        </div>
+        <form method="post" action="/volunteer/2fa" class={cardClass}>
+          <p role="alert" class={errorClass}>
+            {codeError}
+          </p>
+          <input type="hidden" name="intent" value="verify" />
+          <input type="hidden" name="factorId" value={enrollment.factorId} />
+          <input type="hidden" name="qrCode" value={enrollment.qrCode} />
+          <input type="hidden" name="secret" value={enrollment.secret} />
+          <div class="flex flex-col gap-1">
+            <label for="code" class="font-medium">
+              Код из приложения
+            </label>
+            <input
+              id="code"
+              name="code"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              required
+              class="h-12 w-full rounded-lg border border-(--accent) bg-(--accent-soft) px-3 text-center text-2xl tracking-code"
+            />
           </div>
-          <form method="post" action="/volunteer/2fa" class="flex flex-col items-center gap-4">
-            <p role="alert" class={errorClass}>{error}</p>
-            <input type="hidden" name="intent" value="start" />
-            <button type="submit" class={primaryButtonClass} data-pending="Готовим…">Начать настройку</button>
-          </form>
-        </>
-      )
-    }
+          <button type="submit" class={primaryButtonClass} data-pending="Проверяем…">
+            Подтвердить
+          </button>
+        </form>
+      </div>
+    ) : (
+      <>
+        <div class="flex flex-col gap-2 text-(--muted)">
+          <p>
+            Чтобы войти в панель приюта, нужен пароль и короткий код из приложения. Так посторонний не попадёт в панель,
+            даже если узнает ваш пароль.
+          </p>
+          <p>
+            Установите на телефон бесплатное приложение Google Authenticator, нажмите «Начать настройку» и наведите
+            камеру приложения на QR-код.
+          </p>
+        </div>
+        <form method="post" action="/volunteer/2fa" class="flex flex-col items-center gap-4">
+          <p role="alert" class={errorClass}>
+            {error}
+          </p>
+          <input type="hidden" name="intent" value="start" />
+          <button type="submit" class={primaryButtonClass} data-pending="Готовим…">
+            Начать настройку
+          </button>
+        </form>
+      </>
+    )}
   </AuthPage>
 </PanelLayout>

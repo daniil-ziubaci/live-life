@@ -18,7 +18,10 @@ test("the animal form limits text length, and the server checks it too", async (
     await expect(page.locator(`[name="${field}"]`)).toHaveAttribute("maxlength", String(limit));
   }
   await page.goto("/volunteer");
-  await page.getByRole("link", { name: /^Редактировать: / }).first().click();
+  await page
+    .getByRole("link", { name: /^Редактировать: / })
+    .first()
+    .click();
   await expect(page).toHaveURL(/\/volunteer\/pets\/[0-9a-f-]+\/edit$/);
   const edit = page.url();
   for (const [label, field, limit] of LIMITS) {

@@ -53,7 +53,9 @@ export async function translateStale(deadline: number): Promise<TranslateReport>
 
   const { data: shelter } = await supabase
     .from("shelter")
-    .select("content_language, about, adoption_info, legal_info, contact_hours, photo_alt, city, donation_text, translations")
+    .select(
+      "content_language, about, adoption_info, legal_info, contact_hours, photo_alt, city, donation_text, translations",
+    )
     .maybeSingle();
   if (!shelter) {
     return report;
@@ -76,9 +78,20 @@ export async function translateStale(deadline: number): Promise<TranslateReport>
   }
 
   const items = await fetchAll((from, to) =>
-    supabase.from("purchase_items").select("id, name, note, translations").gt("remaining", 0).order("id").range(from, to),
+    supabase
+      .from("purchase_items")
+      .select("id, name, note, translations")
+      .gt("remaining", 0)
+      .order("id")
+      .range(from, to),
   );
-  const itemCounts = await refresh(supabase, "purchase_items", items, (item) => itemTranslations(item, language), deadline);
+  const itemCounts = await refresh(
+    supabase,
+    "purchase_items",
+    items,
+    (item) => itemTranslations(item, language),
+    deadline,
+  );
 
   const projects = await fetchAll((from, to) =>
     supabase
@@ -88,7 +101,13 @@ export async function translateStale(deadline: number): Promise<TranslateReport>
       .order("id")
       .range(from, to),
   );
-  const projectCounts = await refresh(supabase, "projects", projects, (project) => projectTranslations(project, language), deadline);
+  const projectCounts = await refresh(
+    supabase,
+    "projects",
+    projects,
+    (project) => projectTranslations(project, language),
+    deadline,
+  );
 
   const pets = await fetchAll((from, to) =>
     supabase

@@ -58,16 +58,16 @@ try {
 }
 
 const folder = `brand/${randomUUID()}`;
-console.log(`Будут загружены логотип и значки (${Object.keys(files).join(", ")}) в ${folder}${shelter.brand_path ? `, старые из ${shelter.brand_path} удалены` : ""}.`);
+console.log(
+  `Будут загружены логотип и значки (${Object.keys(files).join(", ")}) в ${folder}${shelter.brand_path ? `, старые из ${shelter.brand_path} удалены` : ""}.`,
+);
 stopUnlessApply(apply);
 
 for (const [name, content] of Object.entries(files)) {
-  const { error } = await supabase.storage
-    .from("pet-photos")
-    .upload(`${folder}/${name}`, content, {
-      contentType: "image/png",
-      cacheControl: "31536000",
-    });
+  const { error } = await supabase.storage.from("pet-photos").upload(`${folder}/${name}`, content, {
+    contentType: "image/png",
+    cacheControl: "31536000",
+  });
   if (error) {
     console.error(`Не удалось загрузить ${name}: ${error.message}`);
     process.exit(1);
@@ -82,21 +82,15 @@ const { data: updated, error: updateError } = await supabase
   .maybeSingle();
 
 if (updateError || !updated) {
-  console.error(
-    `Файлы загружены (${folder}), но в профиль не записаны: ${updateError?.message ?? "приют не найден"}`,
-  );
+  console.error(`Файлы загружены (${folder}), но в профиль не записаны: ${updateError?.message ?? "приют не найден"}`);
   process.exit(1);
 }
 
 const oldFolder = shelter.brand_path;
 if (oldFolder) {
-  const { data: oldFiles } = await supabase.storage
-    .from("pet-photos")
-    .list(oldFolder);
+  const { data: oldFiles } = await supabase.storage.from("pet-photos").list(oldFolder);
   if (oldFiles && oldFiles.length > 0) {
-    await supabase.storage
-      .from("pet-photos")
-      .remove(oldFiles.map((file) => `${oldFolder}/${file.name}`));
+    await supabase.storage.from("pet-photos").remove(oldFiles.map((file) => `${oldFolder}/${file.name}`));
   }
 }
 

@@ -11,12 +11,26 @@ const { factorId, error, action } = Astro.props;
 ---
 
 <form method="post" action={action} class={cardClass}>
-  <p role="alert" class={errorClass}>{error}</p>
+  <p role="alert" class={errorClass}>
+    {error}
+  </p>
   <input type="hidden" name="intent" value="verify" />
   <input type="hidden" name="factorId" value={factorId} />
   <div class="flex flex-col gap-1">
-    <label for="code" class={labelClass}>Код из приложения</label>
-    <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required class={`${fieldClass} text-center text-2xl tracking-code`} />
+    <label for="code" class={labelClass}>
+      Код из приложения
+    </label>
+    <input
+      id="code"
+      name="code"
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      required
+      class={`${fieldClass} text-center text-2xl tracking-code`}
+    />
   </div>
-  <button type="submit" class={primaryButtonClass} data-pending="Проверяем…">Подтвердить</button>
+  <button type="submit" class={primaryButtonClass} data-pending="Проверяем…">
+    Подтвердить
+  </button>
 </form>

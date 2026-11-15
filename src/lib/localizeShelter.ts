@@ -13,24 +13,14 @@ type ShelterTexts = {
   translations: Json;
 };
 
-export function localizeShelter<T extends ShelterTexts>(
-  shelter: T,
-  locale: string,
-) {
+export function localizeShelter<T extends ShelterTexts>(shelter: T, locale: string) {
   const translations = readTranslations(shelter.translations);
   const pick = (field: string, original: string | null) => {
     if (original === null) {
       return { text: null, translated: false };
     }
-    const text = pickTranslation(
-      translations,
-      field,
-      locale,
-      textHash("", original),
-    );
-    return text === null
-      ? { text: original, translated: false }
-      : { text, translated: true };
+    const text = pickTranslation(translations, field, locale, textHash("", original));
+    return text === null ? { text: original, translated: false } : { text, translated: true };
   };
 
   const about = pick("about", shelter.about);

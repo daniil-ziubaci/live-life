@@ -19,7 +19,9 @@ export async function saveProject(
   if (!parsed.ok) return fail(parsed.error);
   const { title, description, helpKinds, photoAlt, progress } = parsed.fields;
 
-  let photoFields: { photo_path?: string | null; photo_alt?: string | null } = existing ? {} : { photo_path: null, photo_alt: null };
+  let photoFields: { photo_path?: string | null; photo_alt?: string | null } = existing
+    ? {}
+    : { photo_path: null, photo_alt: null };
   const photo = formData.get("photo");
   if (hasFile(photo)) {
     if (photoAlt.length === 0) return fail("Опишите фото: это нужно людям, которые его не видят.");
@@ -47,7 +49,9 @@ export async function saveProject(
       .from("projects")
       .update({
         ...row,
-        ...(progress ? { status: progress.done === progress.total ? PROJECT_STATUS_COMPLETED : PROJECT_STATUS_ONGOING } : {}),
+        ...(progress
+          ? { status: progress.done === progress.total ? PROJECT_STATUS_COMPLETED : PROJECT_STATUS_ONGOING }
+          : {}),
       })
       .eq("id", existing.id)
       .select("id")
@@ -55,7 +59,8 @@ export async function saveProject(
     if (error) return fail("Не удалось сохранить проект. Попробуйте ещё раз.");
     if (!data) return fail("Проект не найден или недоступен.");
     projectId = existing.id;
-    if (existing.photo_path && photoFields.photo_path) removeReplacedProjectPhoto(astro, existing.photo_path, photoFields.photo_path);
+    if (existing.photo_path && photoFields.photo_path)
+      removeReplacedProjectPhoto(astro, existing.photo_path, photoFields.photo_path);
   } else {
     const { data, error } = await supabase.from("projects").insert(row).select("id").single();
     if (error || !data) return fail("Не удалось сохранить проект. Попробуйте ещё раз.");

@@ -2,26 +2,14 @@ import { textHash } from "@/lib/hashText";
 import { pickTranslation, readTranslations } from "@/lib/translations";
 import type { Json } from "@/lib/database";
 
-export function localizeItem<
-  T extends { name: string; note?: string | null; translations: Json },
->(item: T, locale: string) {
+export function localizeItem<T extends { name: string; note?: string | null; translations: Json }>(
+  item: T,
+  locale: string,
+) {
   const translations = readTranslations(item.translations);
-  const name = pickTranslation(
-    translations,
-    "name",
-    locale,
-    textHash("", item.name),
-  );
+  const name = pickTranslation(translations, "name", locale, textHash("", item.name));
   const originalNote = item.note ?? null;
-  const note =
-    originalNote === null
-      ? null
-      : pickTranslation(
-          translations,
-          "note",
-          locale,
-          textHash("", originalNote),
-        );
+  const note = originalNote === null ? null : pickTranslation(translations, "note", locale, textHash("", originalNote));
   return {
     ...item,
     name: name ?? item.name,

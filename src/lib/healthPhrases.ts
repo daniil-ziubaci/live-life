@@ -20,11 +20,7 @@ const HEALTH_PHRASES: Record<string, Record<string, string>> = {
   },
 };
 
-export function translateHealthPhrases(
-  text: string,
-  from: string,
-  to: string,
-): string | null {
+export function translateHealthPhrases(text: string, from: string, to: string): string | null {
   if (from !== "ru") {
     return null;
   }
@@ -39,9 +35,7 @@ export function translateHealthPhrases(
     if (!word) {
       return null;
     }
-    words.push(
-      words.length === 0 ? word : word.charAt(0).toLowerCase() + word.slice(1),
-    );
+    words.push(words.length === 0 ? word : word.charAt(0).toLowerCase() + word.slice(1));
   }
   return words.join(", ");
 }

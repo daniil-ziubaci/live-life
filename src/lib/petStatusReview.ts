@@ -5,15 +5,10 @@ const REVIEW_STATUSES: string[] = [PET_STATUS_PENDING, PET_STATUS_TREATMENT];
 export const PET_STATUS_REVIEW_DAYS = 7;
 
 export function getPetReviewCutoff(): string {
-  return new Date(
-    Date.now() - PET_STATUS_REVIEW_DAYS * 24 * 60 * 60 * 1000,
-  ).toISOString();
+  return new Date(Date.now() - PET_STATUS_REVIEW_DAYS * 24 * 60 * 60 * 1000).toISOString();
 }
 
-export function isPetStatusStale(
-  status: string,
-  changedAt: string | null,
-): boolean {
+export function isPetStatusStale(status: string, changedAt: string | null): boolean {
   if (!changedAt) return false;
   if (!REVIEW_STATUSES.includes(status)) return false;
   const ageMs = Date.now() - new Date(changedAt).getTime();

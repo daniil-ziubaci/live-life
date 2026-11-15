@@ -19,7 +19,9 @@ if (existing) {
   process.exit(0);
 }
 
-console.log(`Будет заведён приют «${name}»${city ? `, город ${city}` : ""}. Он скрыт от посетителей, пока is_published = false.`);
+console.log(
+  `Будет заведён приют «${name}»${city ? `, город ${city}` : ""}. Он скрыт от посетителей, пока is_published = false.`,
+);
 stopUnlessApply(apply);
 
 const { error: insertError } = await supabase.from("shelter").insert({ name, city: city ?? null });

@@ -121,7 +121,12 @@ function buildHref(next: HrefState) {
 }
 const pill =
   "inline-flex min-h-11 items-center rounded-full border border-(--border-strong) bg-(--surface) px-4 aria-current:bg-(--accent) aria-current:text-white";
-const statusLabels = { looking: "Ищут дом", pending: "В процессе", treatment: "Лечение: пока нельзя забрать", archive: "Архив" };
+const statusLabels = {
+  looking: "Ищут дом",
+  pending: "В процессе",
+  treatment: "Лечение: пока нельзя забрать",
+  archive: "Архив",
+};
 const selected = [
   current.species === "dog" ? "Собаки" : current.species === "cat" ? "Кошки" : null,
   current.status ? statusLabels[current.status] : null,
@@ -141,205 +146,279 @@ const statusOptions: [string | undefined, string][] = [
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-4 p-4 pt-4">
     <h1 class="text-3xl font-bold sm:text-center">Животные приюта</h1>
     <InvalidRecord flash={flash} />
-    {
-      !volunteer ? (
-        <p>{NOT_A_VOLUNTEER}</p>
-      ) : (
-        <>
-          <a
-            href="/volunteer/pets/new"
-            class="flex min-h-10 items-center justify-center rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium sm:self-center"
-          >
-            Добавить животное
-          </a>
-          <div class="flex flex-col gap-3 rounded-2xl border border-(--border-strong) bg-(--surface) p-3 shadow-md sm:mx-auto sm:w-half-gap">
-            <form action="/volunteer" method="get" role="search" class="flex flex-col gap-2">
-              <label for="pet-search" class="font-medium">Найти по имени или вольеру</label>
-              <p id="pet-search-hint" class={hintClass}>Можно вписать имя, вольер или и то и другое, в любом порядке.</p>
-              <div class="flex gap-2">
-                <input
-                  id="pet-search"
-                  aria-describedby="pet-search-hint"
-                  type="search"
-                  name="q"
-                  value={search}
-                  enterkeyhint="search"
-                  autocomplete="off"
-                  class="h-10 min-w-0 flex-1 rounded-lg border border-(--accent) bg-(--accent-soft) px-3 text-base"
-                />
-                <button type="submit" class="h-10 cursor-pointer rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium">Показать</button>
+    {!volunteer ? (
+      <p>{NOT_A_VOLUNTEER}</p>
+    ) : (
+      <>
+        <a
+          href="/volunteer/pets/new"
+          class="flex min-h-10 items-center justify-center rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium sm:self-center"
+        >
+          Добавить животное
+        </a>
+        <div class="flex flex-col gap-3 rounded-2xl border border-(--border-strong) bg-(--surface) p-3 shadow-md sm:mx-auto sm:w-half-gap">
+          <form action="/volunteer" method="get" role="search" class="flex flex-col gap-2">
+            <label for="pet-search" class="font-medium">
+              Найти по имени или вольеру
+            </label>
+            <p id="pet-search-hint" class={hintClass}>
+              Можно вписать имя, вольер или и то и другое, в любом порядке.
+            </p>
+            <div class="flex gap-2">
+              <input
+                id="pet-search"
+                aria-describedby="pet-search-hint"
+                type="search"
+                name="q"
+                value={search}
+                enterkeyhint="search"
+                autocomplete="off"
+                class="h-10 min-w-0 flex-1 rounded-lg border border-(--accent) bg-(--accent-soft) px-3 text-base"
+              />
+              <button
+                type="submit"
+                class="h-10 cursor-pointer rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium"
+              >
+                Показать
+              </button>
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="pet-sort" class="font-medium">
+                Порядок
+              </label>
+              <div class="relative min-w-0 flex-1">
+                <select
+                  id="pet-sort"
+                  name="sort"
+                  class="h-10 w-full appearance-none rounded-lg border border-(--border-strong) bg-(--surface) pr-10 pl-3 text-base"
+                >
+                  <option value="name" selected={sort === "name"}>
+                    По имени
+                  </option>
+                  <option value="new" selected={sort === "new"}>
+                    Новые сверху
+                  </option>
+                  <option value="stale" selected={sort === "stale"}>
+                    Требуют проверки
+                  </option>
+                </select>
+                <span
+                  aria-hidden="true"
+                  class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-(--muted)"
+                >
+                  ▾
+                </span>
               </div>
-              <div class="flex items-center gap-2">
-                <label for="pet-sort" class="font-medium">Порядок</label>
-                <div class="relative min-w-0 flex-1">
-                  <select id="pet-sort" name="sort" class="h-10 w-full appearance-none rounded-lg border border-(--border-strong) bg-(--surface) pr-10 pl-3 text-base">
-                    <option value="name" selected={sort === "name"}>По имени</option>
-                    <option value="new" selected={sort === "new"}>Новые сверху</option>
-                    <option value="stale" selected={sort === "stale"}>Требуют проверки</option>
-                  </select>
-                  <span aria-hidden="true" class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-(--muted)">▾</span>
-                </div>
-              </div>
-              {current.species && <input type="hidden" name="species" value={current.species} />}
-              {current.treatment && <input type="hidden" name="treatment" value={current.treatment} />}
-              {current.status && <input type="hidden" name="status" value={current.status} />}
-            </form>
-            <details class="group border-t border-(--border) pt-1">
-              <summary class="flex min-h-10 cursor-pointer items-center justify-between pr-3 font-medium">
-                {filtersSummary}
-                <span aria-hidden="true" class="text-(--muted) transition-transform group-open:rotate-180">▾</span>
-              </summary>
-              <nav aria-label="Фильтры" class="flex flex-col gap-3 py-3">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-medium">Вид</span>
-                  <a href={buildHref({ ...current, species: undefined })} aria-current={current.species ? undefined : "true"} class={pill}>Все</a>
-                  <a href={buildHref({ ...current, species: "dog" })} aria-current={current.species === "dog" ? "true" : undefined} class={pill}>Собаки</a>
-                  <a href={buildHref({ ...current, species: "cat" })} aria-current={current.species === "cat" ? "true" : undefined} class={pill}>Кошки</a>
-                </div>
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-medium">Статус</span>
-                  {statusOptions.map(([key, label]) => (
-                    <a href={buildHref({ ...current, status: key })} aria-current={current.status === key ? "true" : undefined} class={pill}>
-                      {label}
-                    </a>
-                  ))}
-                </div>
-              </nav>
-              <div class="flex flex-wrap items-center gap-2 pb-3">
-                <span class="font-medium">Лечение</span>
+            </div>
+            {current.species && <input type="hidden" name="species" value={current.species} />}
+            {current.treatment && <input type="hidden" name="treatment" value={current.treatment} />}
+            {current.status && <input type="hidden" name="status" value={current.status} />}
+          </form>
+          <details class="group border-t border-(--border) pt-1">
+            <summary class="flex min-h-10 cursor-pointer items-center justify-between pr-3 font-medium">
+              {filtersSummary}
+              <span aria-hidden="true" class="text-(--muted) transition-transform group-open:rotate-180">
+                ▾
+              </span>
+            </summary>
+            <nav aria-label="Фильтры" class="flex flex-col gap-3 py-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-medium">Вид</span>
                 <a
-                  href={buildHref({ ...current, status: current.status === "treatment" ? undefined : "treatment" })}
-                  aria-current={current.status === "treatment" ? "true" : undefined}
+                  href={buildHref({ ...current, species: undefined })}
+                  aria-current={current.species ? undefined : "true"}
                   class={pill}
                 >
-                  Лечение: пока нельзя забрать
+                  Все
                 </a>
-                <a href={buildHref({ ...current, treatment: current.treatment ? undefined : "1" })} aria-current={current.treatment ? "true" : undefined} class={pill}>
-                  Срочно нужна помощь с лечением
+                <a
+                  href={buildHref({ ...current, species: "dog" })}
+                  aria-current={current.species === "dog" ? "true" : undefined}
+                  class={pill}
+                >
+                  Собаки
+                </a>
+                <a
+                  href={buildHref({ ...current, species: "cat" })}
+                  aria-current={current.species === "cat" ? "true" : undefined}
+                  class={pill}
+                >
+                  Кошки
                 </a>
               </div>
-            </details>
-          </div>
-          {failed ? (
-            <p role="alert">Не удалось загрузить список животных.</p>
-          ) : (
-            <>
-              <p role="status" class="sm:text-center">
-                {total === 0
-                  ? search || current.species || current.status
-                    ? "Никого не нашли."
-                    : "Животных пока нет."
-                  : total > VOLUNTEER_PAGE_SIZE
-                    ? `Показаны ${from + 1}–${from + pets.length} из ${total}`
-                    : `Найдено животных: ${total}`}
-              </p>
-              {total === 0 && (search || current.species || current.status) && (
-                <p class="sm:mx-auto sm:w-half-gap sm:text-center">
-                  Попробуйте часть имени, вольер или другой фильтр.{" "}
-                  <a href="/volunteer" class="inline-block py-2 underline">
-                    Сбросить поиск
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-medium">Статус</span>
+                {statusOptions.map(([key, label]) => (
+                  <a
+                    href={buildHref({ ...current, status: key })}
+                    aria-current={current.status === key ? "true" : undefined}
+                    class={pill}
+                  >
+                    {label}
                   </a>
-                </p>
-              )}
-              <ul class="grid grid-cols-1 gap-4 wide:grid-cols-2">
-                {pets.map((pet) => (
-                  <li class="flex flex-col gap-2 rounded-2xl border border-(--border) bg-(--surface) p-3 shadow-md">
-                    <div class="flex flex-col gap-3 sm:flex-row">
-                      <div class="relative aspect-4/3 w-full shrink-0 overflow-hidden rounded-lg bg-(--hover) sm:w-48">
-                        <img src={cardCopyOf(pet.photo_url)} data-fallback={pet.photo_url} alt="" loading="lazy" class="absolute inset-0 size-full object-cover" />
-                      </div>
-                      <div class="flex min-w-0 flex-1 flex-col gap-2">
-                        <div class="flex items-start gap-3">
-                          <h2 class="max-w-pet-name shrink-0 text-pet-name leading-tight font-bold wrap-break-word">{pet.name}</h2>
-                          <a
-                            href={`/volunteer/pets/${pet.id}/edit`}
-                            aria-label={`Редактировать: ${pet.name}`}
-                            class="ml-auto flex h-10 min-w-0 items-center rounded-lg border border-(--border-strong) bg-(--surface) px-3 text-control font-medium"
-                          >
-                            <span class="truncate">Редактировать</span>
-                          </a>
-                        </div>
-                        <p>
-                          {pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)}, {formatAge(monthsSince(pet.birth_date), pet.is_age_approximate, tAge)}
-                          {pet.size ? `, размер: ${PET_SIZE_LABELS[pet.size] ?? pet.size}` : ""}
-                        </p>
-                        {pet.enclosure && <p>Вольер: {pet.enclosure}</p>}
-                        <form method="post" action="/volunteer" class="mt-auto flex gap-2">
-                          <input type="hidden" name="petId" value={pet.id} />
-                          <input type="hidden" name="back" value={here} />
-                          <div class="relative min-w-0 flex-1">
-                            <select
-                              name="status"
-                              aria-label={`Статус: ${pet.name}`}
-                              class="h-10 w-full appearance-none rounded-lg border border-(--accent) bg-(--accent-soft) pr-10 pl-3 text-base *:bg-(--surface)"
-                            >
-                              {PET_STATUSES.map((status) => (
-                                <option value={status} selected={status === pet.status}>
-                                  {status === PET_STATUS_TREATMENT ? "лечение" : status}
-                                </option>
-                              ))}
-                            </select>
-                            <span aria-hidden="true" class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-(--muted)">▾</span>
-                          </div>
-                          <button
-                            type="submit"
-                            aria-label={`Сохранить статус: ${pet.name}`}
-                            class="h-10 cursor-pointer rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium"
-                          >
-                            Сохранить
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                    {isPetStatusStale(pet.status, pet.status_changed_at) && (
-                      <p class="rounded-lg bg-(--pending-soft) px-3 py-2 font-semibold text-(--pending)">
-                        Проверьте, актуален ли статус: ему больше {PET_STATUS_REVIEW_DAYS} дней.
-                      </p>
-                    )}
-                    {(pet.status === PET_STATUS_TREATMENT || pet.needs_treatment_since) && (
-                      <div class="flex flex-col gap-0.5 border-t border-(--border) pt-2">
-                        {pet.status === PET_STATUS_TREATMENT && (
-                          <p class="rounded-lg bg-(--danger-soft) px-3 py-1 font-medium text-(--danger)">Лечение: пока нельзя забрать.</p>
-                        )}
-                        {pet.needs_treatment_since && (
-                          <p class="rounded-lg bg-(--danger-soft) px-3 py-1 font-medium text-(--danger)">
-                            Срочно нужна помощь с лечением, с{" "}
-                            {new Date(pet.needs_treatment_since).toLocaleDateString("ru-RU", { day: "numeric", month: "long" })}.
-                          </p>
-                        )}
-                        {pet.needs_treatment_since && isTreatmentStale(pet.needs_treatment_since) && (
-                          <p class="rounded-lg bg-(--pending-soft) px-3 py-2 font-semibold text-(--pending)">Проверьте, актуально ли: отметка стоит давно.</p>
-                        )}
-                      </div>
-                    )}
-                  </li>
                 ))}
-              </ul>
-              {lastPage > 1 && (
-                <nav aria-label="Страницы списка" class="flex items-center justify-between gap-2">
-                  {page > 1 ? (
-                    <a href={buildHref({ ...current, page: page - 1 })} class={pill}>
-                      Назад
-                    </a>
-                  ) : (
-                    <span />
+              </div>
+            </nav>
+            <div class="flex flex-wrap items-center gap-2 pb-3">
+              <span class="font-medium">Лечение</span>
+              <a
+                href={buildHref({ ...current, status: current.status === "treatment" ? undefined : "treatment" })}
+                aria-current={current.status === "treatment" ? "true" : undefined}
+                class={pill}
+              >
+                Лечение: пока нельзя забрать
+              </a>
+              <a
+                href={buildHref({ ...current, treatment: current.treatment ? undefined : "1" })}
+                aria-current={current.treatment ? "true" : undefined}
+                class={pill}
+              >
+                Срочно нужна помощь с лечением
+              </a>
+            </div>
+          </details>
+        </div>
+        {failed ? (
+          <p role="alert">Не удалось загрузить список животных.</p>
+        ) : (
+          <>
+            <p role="status" class="sm:text-center">
+              {total === 0
+                ? search || current.species || current.status
+                  ? "Никого не нашли."
+                  : "Животных пока нет."
+                : total > VOLUNTEER_PAGE_SIZE
+                  ? `Показаны ${from + 1}–${from + pets.length} из ${total}`
+                  : `Найдено животных: ${total}`}
+            </p>
+            {total === 0 && (search || current.species || current.status) && (
+              <p class="sm:mx-auto sm:w-half-gap sm:text-center">
+                Попробуйте часть имени, вольер или другой фильтр.{" "}
+                <a href="/volunteer" class="inline-block py-2 underline">
+                  Сбросить поиск
+                </a>
+              </p>
+            )}
+            <ul class="grid grid-cols-1 gap-4 wide:grid-cols-2">
+              {pets.map((pet) => (
+                <li class="flex flex-col gap-2 rounded-2xl border border-(--border) bg-(--surface) p-3 shadow-md">
+                  <div class="flex flex-col gap-3 sm:flex-row">
+                    <div class="relative aspect-4/3 w-full shrink-0 overflow-hidden rounded-lg bg-(--hover) sm:w-48">
+                      <img
+                        src={cardCopyOf(pet.photo_url)}
+                        data-fallback={pet.photo_url}
+                        alt=""
+                        loading="lazy"
+                        class="absolute inset-0 size-full object-cover"
+                      />
+                    </div>
+                    <div class="flex min-w-0 flex-1 flex-col gap-2">
+                      <div class="flex items-start gap-3">
+                        <h2 class="max-w-pet-name shrink-0 text-pet-name leading-tight font-bold wrap-break-word">
+                          {pet.name}
+                        </h2>
+                        <a
+                          href={`/volunteer/pets/${pet.id}/edit`}
+                          aria-label={`Редактировать: ${pet.name}`}
+                          class="ml-auto flex h-10 min-w-0 items-center rounded-lg border border-(--border-strong) bg-(--surface) px-3 text-control font-medium"
+                        >
+                          <span class="truncate">Редактировать</span>
+                        </a>
+                      </div>
+                      <p>
+                        {pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)},{" "}
+                        {formatAge(monthsSince(pet.birth_date), pet.is_age_approximate, tAge)}
+                        {pet.size ? `, размер: ${PET_SIZE_LABELS[pet.size] ?? pet.size}` : ""}
+                      </p>
+                      {pet.enclosure && <p>Вольер: {pet.enclosure}</p>}
+                      <form method="post" action="/volunteer" class="mt-auto flex gap-2">
+                        <input type="hidden" name="petId" value={pet.id} />
+                        <input type="hidden" name="back" value={here} />
+                        <div class="relative min-w-0 flex-1">
+                          <select
+                            name="status"
+                            aria-label={`Статус: ${pet.name}`}
+                            class="h-10 w-full appearance-none rounded-lg border border-(--accent) bg-(--accent-soft) pr-10 pl-3 text-base *:bg-(--surface)"
+                          >
+                            {PET_STATUSES.map((status) => (
+                              <option value={status} selected={status === pet.status}>
+                                {status === PET_STATUS_TREATMENT ? "лечение" : status}
+                              </option>
+                            ))}
+                          </select>
+                          <span
+                            aria-hidden="true"
+                            class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-(--muted)"
+                          >
+                            ▾
+                          </span>
+                        </div>
+                        <button
+                          type="submit"
+                          aria-label={`Сохранить статус: ${pet.name}`}
+                          class="h-10 cursor-pointer rounded-lg border border-(--border-strong) bg-(--surface) px-4 font-medium"
+                        >
+                          Сохранить
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                  {isPetStatusStale(pet.status, pet.status_changed_at) && (
+                    <p class="rounded-lg bg-(--pending-soft) px-3 py-2 font-semibold text-(--pending)">
+                      Проверьте, актуален ли статус: ему больше {PET_STATUS_REVIEW_DAYS} дней.
+                    </p>
                   )}
-                  <span aria-current="page">
-                    Страница {page} из {lastPage}
-                  </span>
-                  {page < lastPage ? (
-                    <a href={buildHref({ ...current, page: page + 1 })} class={pill}>
-                      Далее
-                    </a>
-                  ) : (
-                    <span />
+                  {(pet.status === PET_STATUS_TREATMENT || pet.needs_treatment_since) && (
+                    <div class="flex flex-col gap-0.5 border-t border-(--border) pt-2">
+                      {pet.status === PET_STATUS_TREATMENT && (
+                        <p class="rounded-lg bg-(--danger-soft) px-3 py-1 font-medium text-(--danger)">
+                          Лечение: пока нельзя забрать.
+                        </p>
+                      )}
+                      {pet.needs_treatment_since && (
+                        <p class="rounded-lg bg-(--danger-soft) px-3 py-1 font-medium text-(--danger)">
+                          Срочно нужна помощь с лечением, с{" "}
+                          {new Date(pet.needs_treatment_since).toLocaleDateString("ru-RU", {
+                            day: "numeric",
+                            month: "long",
+                          })}
+                          .
+                        </p>
+                      )}
+                      {pet.needs_treatment_since && isTreatmentStale(pet.needs_treatment_since) && (
+                        <p class="rounded-lg bg-(--pending-soft) px-3 py-2 font-semibold text-(--pending)">
+                          Проверьте, актуально ли: отметка стоит давно.
+                        </p>
+                      )}
+                    </div>
                   )}
-                </nav>
-              )}
-            </>
-          )}
-        </>
-      )
-    }
+                </li>
+              ))}
+            </ul>
+            {lastPage > 1 && (
+              <nav aria-label="Страницы списка" class="flex items-center justify-between gap-2">
+                {page > 1 ? (
+                  <a href={buildHref({ ...current, page: page - 1 })} class={pill}>
+                    Назад
+                  </a>
+                ) : (
+                  <span />
+                )}
+                <span aria-current="page">
+                  Страница {page} из {lastPage}
+                </span>
+                {page < lastPage ? (
+                  <a href={buildHref({ ...current, page: page + 1 })} class={pill}>
+                    Далее
+                  </a>
+                ) : (
+                  <span />
+                )}
+              </nav>
+            )}
+          </>
+        )}
+      </>
+    )}
   </main>
 </PanelLayout>

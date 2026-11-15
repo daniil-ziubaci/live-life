@@ -9,9 +9,7 @@ function pause(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-export type DeeplStatus =
-  | { ok: true; remaining: number }
-  | { ok: false; reason: string };
+export type DeeplStatus = { ok: true; remaining: number } | { ok: false; reason: string };
 
 export async function getDeeplStatus(): Promise<DeeplStatus> {
   const key = DEEPL_API_KEY;
@@ -35,12 +33,8 @@ export async function getDeeplStatus(): Promise<DeeplStatus> {
       console.error(reason, (await response.text()).slice(0, 200));
       return { ok: false, reason };
     }
-    const usage: { character_count: number; character_limit: number } =
-      await response.json();
-    const remaining = Math.max(
-      0,
-      Math.floor(usage.character_limit * STOP_SHARE) - usage.character_count,
-    );
+    const usage: { character_count: number; character_limit: number } = await response.json();
+    const remaining = Math.max(0, Math.floor(usage.character_limit * STOP_SHARE) - usage.character_count);
     if (remaining === 0) {
       const reason = `лимит DeepL на этот месяц израсходован: ${usage.character_count} из ${usage.character_limit} символов (перевод останавливается на 95%)`;
       console.error(reason);
@@ -64,10 +58,7 @@ function targetCode(locale: string): string {
 }
 
 function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function unescapeXml(text: string): string {
@@ -90,10 +81,7 @@ function prepare(text: string, name?: NamePair): string {
   if (!name || name.from === "") {
     return escaped;
   }
-  const pattern = new RegExp(
-    `(?<![\\p{L}\\d])${escapeRegExp(escapeXml(name.from))}(?![\\p{L}\\d])`,
-    "giu",
-  );
+  const pattern = new RegExp(`(?<![\\p{L}\\d])${escapeRegExp(escapeXml(name.from))}(?![\\p{L}\\d])`, "giu");
   return escaped.replace(pattern, () => `<x>${escapeXml(name.to)}</x>`);
 }
 
@@ -130,17 +118,14 @@ export async function translateTexts(
         cache: "no-store",
       });
       if (response.ok) {
-        const data: { translations: { text: string }[] } =
-          await response.json();
+        const data: { translations: { text: string }[] } = await response.json();
         if (data.translations.length !== texts.length) {
           console.error(
             `DeepL translate ${from}->${to}: ${data.translations.length} translations for ${texts.length} texts`,
           );
           return null;
         }
-        return data.translations.map((item) =>
-          unescapeXml(item.text.replace(/<\/?x>/g, "")),
-        );
+        return data.translations.map((item) => unescapeXml(item.text.replace(/<\/?x>/g, "")));
       }
       if (!RETRY_STATUSES.includes(response.status)) {
         console.error(
@@ -154,10 +139,7 @@ export async function translateTexts(
         delay = Math.min(retryAfter, 5) * 1000;
       }
     } catch (error) {
-      console.error(
-        `DeepL translate ${from}->${to} failed:`,
-        error instanceof Error ? error.message : error,
-      );
+      console.error(`DeepL translate ${from}->${to} failed:`, error instanceof Error ? error.message : error);
       return null;
     }
     await pause(delay);

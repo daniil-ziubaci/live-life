@@ -22,30 +22,28 @@ const networks = [
 ].filter((network) => network.url);
 ---
 
-{
-  networks.length > 0 && (
-    <nav aria-labelledby="footer-social-heading" class="flex flex-col gap-3 pb-1.5">
-      <p id="footer-social-heading" class="font-semibold">
-        {t("socialHeading")}
-      </p>
-      <ul class="flex flex-wrap gap-5">
-        {networks.map((network) => (
-          <li class="flex">
-            <a
-              href={network.url}
-              aria-label={t("socialLink", { network: network.name })}
-              class="inline-flex size-14 items-center justify-center rounded-full transition-opacity duration-200 hover:opacity-70 motion-reduce:transition-none"
-              style={`color: #${network.color}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" class="size-14">
-                <path d={network.path} />
-              </svg>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  )
-}
+{networks.length > 0 && (
+  <nav aria-labelledby="footer-social-heading" class="flex flex-col gap-3 pb-1.5">
+    <p id="footer-social-heading" class="font-semibold">
+      {t("socialHeading")}
+    </p>
+    <ul class="flex flex-wrap gap-5">
+      {networks.map((network) => (
+        <li class="flex">
+          <a
+            href={network.url}
+            aria-label={t("socialLink", { network: network.name })}
+            class="inline-flex size-14 items-center justify-center rounded-full transition-opacity duration-200 hover:opacity-70 motion-reduce:transition-none"
+            style={`color: #${network.color}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" class="size-14">
+              <path d={network.path} />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

@@ -23,9 +23,7 @@ type PetFields = {
   isAgeApproximate: boolean;
 };
 
-export type ParsePetFieldsResult =
-  | { ok: true; fields: PetFields }
-  | { ok: false; error: string };
+export type ParsePetFieldsResult = { ok: true; fields: PetFields } | { ok: false; error: string };
 
 export function parsePetFields(formData: FormData): ParsePetFieldsResult {
   const text = (field: string) => {
@@ -92,11 +90,7 @@ export function parsePetFields(formData: FormData): ParsePetFieldsResult {
 
   if (birthDateInput) {
     const today = birthDateFromAge(0, 0);
-    if (
-      !/^\d{4}-\d{2}-\d{2}$/.test(birthDateInput) ||
-      birthDateInput > today ||
-      birthDateInput < "1990-01-01"
-    ) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateInput) || birthDateInput > today || birthDateInput < "1990-01-01") {
       return {
         ok: false,
         error: "Введите дату рождения, не позже сегодняшнего дня.",
@@ -113,14 +107,7 @@ export function parsePetFields(formData: FormData): ParsePetFieldsResult {
     }
     const years = Number(ageYearsInput || "0");
     const months = Number(ageMonthsInput || "0");
-    if (
-      !Number.isInteger(years) ||
-      !Number.isInteger(months) ||
-      years < 0 ||
-      years > 30 ||
-      months < 0 ||
-      months > 11
-    ) {
+    if (!Number.isInteger(years) || !Number.isInteger(months) || years < 0 || years > 30 || months < 0 || months > 11) {
       return {
         ok: false,
         error: "Возраст: лет от 0 до 30, месяцев от 0 до 11.",

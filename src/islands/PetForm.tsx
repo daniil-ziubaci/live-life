@@ -56,7 +56,16 @@ export function PetForm({
         <label htmlFor="name" className={labelClass}>
           Кличка
         </label>
-        <input className={fieldClass} id="name" name="name" type="text" maxLength={PET_LIMITS.name} autoComplete="off" defaultValue={initial.name} required />
+        <input
+          className={fieldClass}
+          id="name"
+          name="name"
+          type="text"
+          maxLength={PET_LIMITS.name}
+          autoComplete="off"
+          defaultValue={initial.name}
+          required
+        />
       </div>
 
       <div className="flex flex-col gap-1">
@@ -106,7 +115,15 @@ export function PetForm({
           ["девочка", "Девочка"],
         ].map(([value, label]) => (
           <label key={value} className={radioRowClass}>
-            <input type="radio" className={radio} name="sex" value={value} defaultChecked={initial.sex === value} required /> {label}
+            <input
+              type="radio"
+              className={radio}
+              name="sex"
+              value={value}
+              defaultChecked={initial.sex === value}
+              required
+            />{" "}
+            {label}
           </label>
         ))}
       </fieldset>
@@ -116,7 +133,14 @@ export function PetForm({
           <legend className="mb-1 font-medium">Размер</legend>
           {PET_SIZES.map((size) => (
             <label key={size} className={radioRowClass}>
-              <input type="radio" className={radio} name="size" value={size} defaultChecked={initial.size === size} required />{" "}
+              <input
+                type="radio"
+                className={radio}
+                name="size"
+                value={size}
+                defaultChecked={initial.size === size}
+                required
+              />{" "}
               {size[0].toUpperCase() + size.slice(1)}
             </label>
           ))}
@@ -141,13 +165,31 @@ export function PetForm({
           <label htmlFor="ageYears" className={labelClass}>
             Примерный возраст: полных лет
           </label>
-          <input className={fieldClass} id="ageYears" name="ageYears" type="number" inputMode="numeric" min={0} max={30} defaultValue={initial.ageYears} />
+          <input
+            className={fieldClass}
+            id="ageYears"
+            name="ageYears"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={30}
+            defaultValue={initial.ageYears}
+          />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="ageMonths" className={labelClass}>
             и месяцев
           </label>
-          <input className={fieldClass} id="ageMonths" name="ageMonths" type="number" inputMode="numeric" min={0} max={11} defaultValue={initial.ageMonths} />
+          <input
+            className={fieldClass}
+            id="ageMonths"
+            name="ageMonths"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={11}
+            defaultValue={initial.ageMonths}
+          />
         </div>
       </fieldset>
 
@@ -169,7 +211,16 @@ export function PetForm({
         <label htmlFor="photoAlt" className={labelClass}>
           Описание фото
         </label>
-        <textarea className={textareaClass} id="photoAlt" name="photoAlt" rows={2} maxLength={PET_LIMITS.photoAlt} aria-describedby="photo-alt-hint" defaultValue={initial.photoAlt} required />
+        <textarea
+          className={textareaClass}
+          id="photoAlt"
+          name="photoAlt"
+          rows={2}
+          maxLength={PET_LIMITS.photoAlt}
+          aria-describedby="photo-alt-hint"
+          defaultValue={initial.photoAlt}
+          required
+        />
         <p id="photo-alt-hint" className={hintClass}>
           {mode === "new"
             ? "Опишите, что на фото, для человека, который его не видит. Например: «Рыжая собака среднего размера»."
@@ -181,7 +232,16 @@ export function PetForm({
         <label htmlFor="health" className={labelClass}>
           Здоровье
         </label>
-        <textarea className={textareaClass} id="health" name="health" rows={3} maxLength={PET_LIMITS.health} aria-describedby="text-hint" defaultValue={initial.health} required />
+        <textarea
+          className={textareaClass}
+          id="health"
+          name="health"
+          rows={3}
+          maxLength={PET_LIMITS.health}
+          aria-describedby="text-hint"
+          defaultValue={initial.health}
+          required
+        />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -224,7 +284,16 @@ export function PetForm({
         <label htmlFor="description" className={labelClass}>
           Описание, характер, история
         </label>
-        <textarea className={textareaClass} id="description" name="description" rows={5} maxLength={PET_LIMITS.description} aria-describedby="text-hint" defaultValue={initial.description} required />
+        <textarea
+          className={textareaClass}
+          id="description"
+          name="description"
+          rows={5}
+          maxLength={PET_LIMITS.description}
+          aria-describedby="text-hint"
+          defaultValue={initial.description}
+          required
+        />
         <p id="text-hint" className={hintClass}>
           {CONTACTS_HINT}
         </p>

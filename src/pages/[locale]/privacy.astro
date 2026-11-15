@@ -10,20 +10,25 @@ const t = getTranslator(locale, "Privacy");
 const sections = ["data", "cookies", "recipients", "operator", "retention", "rights"];
 ---
 
-<Base title={t("title")} description={t("description")} locale={locale} path="/privacy" siteName={shelter.name} brandPath={shelter.brand_path}>
+<Base
+  title={t("title")}
+  description={t("description")}
+  locale={locale}
+  path="/privacy"
+  siteName={shelter.name}
+  brandPath={shelter.brand_path}
+>
   <main class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-4 pb-10">
     <h1 class="text-2xl font-bold wrap-break-word sm:text-3xl">{t("heading")}</h1>
     <p>{t("intro")}</p>
     <p class="rounded-2xl bg-(--accent-soft) p-4">{t("draftNotice")}</p>
-    {
-      sections.map((key) => (
-        <section aria-labelledby={`${key}-heading`} class="flex flex-col gap-2">
-          <h2 id={`${key}-heading`} class="text-xl font-bold">
-            {t(`${key}.heading`)}
-          </h2>
-          <p class="whitespace-pre-line">{t(`${key}.text`)}</p>
-        </section>
-      ))
-    }
+    {sections.map((key) => (
+      <section aria-labelledby={`${key}-heading`} class="flex flex-col gap-2">
+        <h2 id={`${key}-heading`} class="text-xl font-bold">
+          {t(`${key}.heading`)}
+        </h2>
+        <p class="whitespace-pre-line">{t(`${key}.text`)}</p>
+      </section>
+    ))}
   </main>
 </Base>

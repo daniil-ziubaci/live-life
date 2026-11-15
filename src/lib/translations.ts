@@ -8,11 +8,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function isEntry(value: unknown): value is TranslationEntry {
-  return (
-    isRecord(value) &&
-    typeof value.text === "string" &&
-    typeof value.hash === "string"
-  );
+  return isRecord(value) && typeof value.text === "string" && typeof value.hash === "string";
 }
 
 export function readTranslations(value: Json): Translations {
@@ -58,22 +54,14 @@ export function sameTranslations(a: Translations, b: Translations): boolean {
     for (const language of languages) {
       const left = languagesA[language];
       const right = languagesB[language];
-      if (
-        !left ||
-        !right ||
-        left.text !== right.text ||
-        left.hash !== right.hash
-      ) {
+      if (!left || !right || left.text !== right.text || left.hash !== right.hash) {
         return false;
       }
     }
   }
   return true;
 }
-export function countNewEntries(
-  next: Translations,
-  previous: Translations,
-): number {
+export function countNewEntries(next: Translations, previous: Translations): number {
   let added = 0;
   for (const [field, byLanguage] of Object.entries(next)) {
     for (const [language, entry] of Object.entries(byLanguage)) {

@@ -56,17 +56,9 @@ function drawCover(bitmap: ImageBitmap, width: number, height: number) {
   return canvas;
 }
 
-function toBlob(
-  canvas: HTMLCanvasElement,
-  type: string,
-  quality: number,
-): Promise<Blob> {
+function toBlob(canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob> {
   return new Promise((resolve, reject) =>
-    canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error("Encoding failed"))),
-      type,
-      quality,
-    ),
+    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Encoding failed"))), type, quality),
   );
 }
 async function encode(
@@ -91,10 +83,7 @@ async function encodePreview(canvas: HTMLCanvasElement): Promise<File> {
   }
   return new File([blob], "preview.jpg", { type: "image/jpeg" });
 }
-export async function preparePhotos(
-  file: File,
-  copies: boolean,
-): Promise<PreparedPhotos> {
+export async function preparePhotos(file: File, copies: boolean): Promise<PreparedPhotos> {
   const bitmap = await createImageBitmap(file, {
     imageOrientation: "from-image",
   });
@@ -104,15 +93,8 @@ export async function preparePhotos(
     if (!copies) {
       return { full, card: null, preview: null };
     }
-    const card = await encode(
-      drawInside(bitmap, CARD_SIDE),
-      `${name}-card`,
-      0.75,
-      0.78,
-    );
-    const preview = await encodePreview(
-      drawCover(bitmap, PREVIEW_WIDTH, PREVIEW_HEIGHT),
-    );
+    const card = await encode(drawInside(bitmap, CARD_SIDE), `${name}-card`, 0.75, 0.78);
+    const preview = await encodePreview(drawCover(bitmap, PREVIEW_WIDTH, PREVIEW_HEIGHT));
     return { full, card, preview };
   } finally {
     bitmap.close();

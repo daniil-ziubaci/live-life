@@ -20,7 +20,11 @@ if (!user) {
   console.error("Пользователь с такой почтой не найден среди первых 1000.");
   process.exit(1);
 }
-const { data: volunteer, error: volunteerError } = await supabase.from("volunteers").select("user_id").eq("user_id", user.id).maybeSingle();
+const { data: volunteer, error: volunteerError } = await supabase
+  .from("volunteers")
+  .select("user_id")
+  .eq("user_id", user.id)
+  .maybeSingle();
 if (volunteerError) {
   console.error(volunteerError.message);
   process.exit(1);
@@ -30,10 +34,15 @@ if (!volunteer) {
   process.exit(1);
 }
 
-console.log(`Будет создана одноразовая ссылка для нового пароля ${email} на ${siteUrl}. Старый пароль перестанет работать, когда человек задаст новый.`);
+console.log(
+  `Будет создана одноразовая ссылка для нового пароля ${email} на ${siteUrl}. Старый пароль перестанет работать, когда человек задаст новый.`,
+);
 stopUnlessApply(apply);
 
-const { data: recovery, error: recoveryError } = await supabase.auth.admin.generateLink({ type: "recovery", email: user.email ?? email });
+const { data: recovery, error: recoveryError } = await supabase.auth.admin.generateLink({
+  type: "recovery",
+  email: user.email ?? email,
+});
 if (recoveryError || !recovery.properties) {
   console.error(recoveryError?.message ?? "Не удалось создать ссылку.");
   process.exit(1);

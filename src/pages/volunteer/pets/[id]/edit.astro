@@ -49,25 +49,25 @@ const initial = pet && {
 
 <PanelLayout title={pet ? `Редактирование: ${pet.name}` : "Редактирование животного"}>
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-1 pb-8">
-    {
-      loadError || internalError ? (
-        <p role="alert">Не удалось загрузить животное.</p>
-      ) : !pet || !initial ? (
-        <p role="alert">Животное не найдено.</p>
-      ) : (
-        <>
-          <h1 class="text-3xl font-bold wrap-break-word sm:mx-auto sm:w-half-gap sm:text-center">Редактирование: {pet.name}</h1>
-          <PetForm
-            client:load
-            action={`/volunteer/pets/${pet.id}/edit`}
-            mode="edit"
-            initial={initial}
-            error={error}
-            photoUrl={pet.photo_url}
-            inTreatment={pet.status === PET_STATUS_TREATMENT}
-          />
-        </>
-      )
-    }
+    {loadError || internalError ? (
+      <p role="alert">Не удалось загрузить животное.</p>
+    ) : !pet || !initial ? (
+      <p role="alert">Животное не найдено.</p>
+    ) : (
+      <>
+        <h1 class="text-3xl font-bold wrap-break-word sm:mx-auto sm:w-half-gap sm:text-center">
+          Редактирование: {pet.name}
+        </h1>
+        <PetForm
+          client:load
+          action={`/volunteer/pets/${pet.id}/edit`}
+          mode="edit"
+          initial={initial}
+          error={error}
+          photoUrl={pet.photo_url}
+          inTreatment={pet.status === PET_STATUS_TREATMENT}
+        />
+      </>
+    )}
   </main>
 </PanelLayout>

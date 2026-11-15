@@ -43,8 +43,7 @@ function transliterate(text: string): string {
 
   return characters
     .map((character, index) => {
-      const latin: string | undefined =
-        CYRILLIC_TO_LATIN[character.toLowerCase()];
+      const latin: string | undefined = CYRILLIC_TO_LATIN[character.toLowerCase()];
 
       if (latin === undefined) {
         return character;
@@ -54,13 +53,9 @@ function transliterate(text: string): string {
         return latin;
       }
 
-      const insideCapitals =
-        isUpperCase(characters[index - 1]) ||
-        isUpperCase(characters[index + 1]);
+      const insideCapitals = isUpperCase(characters[index - 1]) || isUpperCase(characters[index + 1]);
 
-      return insideCapitals
-        ? latin.toUpperCase()
-        : latin.charAt(0).toUpperCase() + latin.slice(1);
+      return insideCapitals ? latin.toUpperCase() : latin.charAt(0).toUpperCase() + latin.slice(1);
     })
     .join("");
 }

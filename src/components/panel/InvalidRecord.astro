@@ -8,10 +8,8 @@ interface Props {
 const { flash } = Astro.props;
 ---
 
-{
-  flash?.key === "invalid" && (
-    <p role="alert" class="font-medium text-(--danger) sm:text-center">
-      {flash.message}
-    </p>
-  )
-}
+{flash?.key === "invalid" && (
+  <p role="alert" class="font-medium text-(--danger) sm:text-center">
+    {flash.message}
+  </p>
+)}

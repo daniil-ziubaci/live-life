@@ -23,7 +23,8 @@ export async function loadShelterRow(): Promise<ShelterRow | null> {
 
 export function localizeShelterRow(row: ShelterRow, locale: Locale) {
   const name = pickShelterName(row, locale);
-  const aboutTitle = (locale === "ru" ? row.about_title : locale === "ro" ? row.about_title_ro : row.about_title_en) ?? name;
+  const aboutTitle =
+    (locale === "ru" ? row.about_title : locale === "ro" ? row.about_title_ro : row.about_title_en) ?? name;
   return { ...localizeShelter(row, locale), name, aboutTitle };
 }
 

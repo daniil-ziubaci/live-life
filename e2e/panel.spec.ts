@@ -7,7 +7,8 @@ import { totp } from "./totp";
 
 const SUPABASE_URL = process.env.E2E_SUPABASE_URL ?? "";
 const SERVICE_KEY = process.env.E2E_SERVICE_ROLE_KEY ?? "";
-const LOCAL_DATABASE = URL.canParse(SUPABASE_URL) && ["127.0.0.1", "localhost"].includes(new URL(SUPABASE_URL).hostname);
+const LOCAL_DATABASE =
+  URL.canParse(SUPABASE_URL) && ["127.0.0.1", "localhost"].includes(new URL(SUPABASE_URL).hostname);
 const CRON_SECRET = process.env.E2E_CRON_SECRET ?? "";
 
 test.describe.configure({ mode: "serial" });
@@ -55,10 +56,17 @@ test("the session cookie is hidden from page scripts and sent only over HTTPS", 
 });
 
 test("a volunteer without a second factor sets one up", async ({ page }) => {
-  test.skip(!SERVICE_KEY || !LOCAL_DATABASE, "E2E_SUPABASE_URL must point to a local database and E2E_SERVICE_ROLE_KEY must be set");
+  test.skip(
+    !SERVICE_KEY || !LOCAL_DATABASE,
+    "E2E_SUPABASE_URL must point to a local database and E2E_SERVICE_ROLE_KEY must be set",
+  );
   const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
   const email = `new-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.org`;
-  const { data: created, error } = await admin.auth.admin.createUser({ email, password: PASSWORD, email_confirm: true });
+  const { data: created, error } = await admin.auth.admin.createUser({
+    email,
+    password: PASSWORD,
+    email_confirm: true,
+  });
   expect(error).toBeNull();
   const userId = created.user?.id ?? "";
   try {
@@ -128,7 +136,11 @@ test("a volunteer adds and edits an animal with a photo", async ({ page }) => {
   const image = publicPage.getByRole("img", { name: "Рыжий пёс на траве" }).first();
   const source = (await image.getAttribute("src")) ?? "";
   expect(source).toMatch(/\/animals\/[0-9a-f-]+\/photo\.(webp|jpg)$/);
-  for (const copy of [source, source.replace(/\.(webp|jpg)$/, "-card.$1"), source.replace(/\.(webp|jpg)$/, "-og.jpg")]) {
+  for (const copy of [
+    source,
+    source.replace(/\.(webp|jpg)$/, "-card.$1"),
+    source.replace(/\.(webp|jpg)$/, "-og.jpg"),
+  ]) {
     const response = await publicPage.request.get(copy);
     expect(response.status(), copy).toBe(200);
     const meta = await sharp(await response.body()).metadata();
@@ -154,14 +166,20 @@ test("a volunteer adds and edits an animal with a photo", async ({ page }) => {
   await expect(page).toHaveURL(/\/volunteer$/);
   const oldCopies = [source, source.replace(/\.(webp|jpg)$/, "-card.$1"), source.replace(/\.(webp|jpg)$/, "-og.jpg")];
   for (const copy of oldCopies) {
-    await expect.poll(async () => (await page.request.get(copy)).status(), { message: `${copy} is removed` }).not.toBe(200);
+    await expect
+      .poll(async () => (await page.request.get(copy)).status(), { message: `${copy} is removed` })
+      .not.toBe(200);
   }
   const replaced = await page.context().newPage();
   await replaced.goto("/ru/catalog");
   await replaced.getByRole("link", { name: `Подробнее: ${name}-2` }).click();
   const newSource = (await replaced.getByRole("img", { name: "Рыжий пёс на траве" }).first().getAttribute("src")) ?? "";
   expect(newSource).toMatch(/\/animals\/[0-9a-f-]+\/[0-9a-f-]{36}\.(webp|jpg)$/);
-  for (const copy of [newSource, newSource.replace(/\.(webp|jpg)$/, "-card.$1"), newSource.replace(/\.(webp|jpg)$/, "-og.jpg")]) {
+  for (const copy of [
+    newSource,
+    newSource.replace(/\.(webp|jpg)$/, "-card.$1"),
+    newSource.replace(/\.(webp|jpg)$/, "-og.jpg"),
+  ]) {
     expect((await replaced.request.get(copy)).status(), copy).toBe(200);
   }
   await replaced.close();
@@ -196,7 +214,9 @@ test("a volunteer records a purchase, undoes it and records consumption", async 
   await page.reload();
   await expect(page.getByText(`2,5 кг, ${name}`)).toBeVisible();
   await page.getByRole("button", { name: `Отменить запись: 2,5 кг, ${name}` }).click();
-  await expect(page.getByRole("status").filter({ hasText: `Покупка отменена: 2,5 кг, ${name}. Нужно: 10 кг` })).toBeVisible();
+  await expect(
+    page.getByRole("status").filter({ hasText: `Покупка отменена: 2,5 кг, ${name}. Нужно: 10 кг` }),
+  ).toBeVisible();
 
   await page.getByRole("link", { name: "Нужно купить" }).click();
   const consumption = page.locator("details", { has: page.getByLabel(`Расход: ${name}`, { exact: true }) });
@@ -229,14 +249,19 @@ test("a volunteer adds a project with a photo and completes it", async ({ page }
   const before = await page.context().newPage();
   await before.goto("/ru/projects");
   const oldPhoto =
-    (await before.locator("li", { has: before.getByRole("heading", { name: title }) }).getByRole("img", { name: "Навес из досок" }).getAttribute("src")) ?? "";
+    (await before
+      .locator("li", { has: before.getByRole("heading", { name: title }) })
+      .getByRole("img", { name: "Навес из досок" })
+      .getAttribute("src")) ?? "";
   await before.close();
   await page.getByRole("link", { name: `Редактировать: ${title}` }).click();
   await page.locator("#photo").setInputFiles(await photo("#993366"));
   await expect(page.getByText(/^Выбрано: photo\./)).toBeVisible({ timeout: 15000 });
   await page.getByRole("button", { name: "Сохранить проект" }).click();
   await expect(page).toHaveURL(/\/volunteer\/projects$/);
-  await expect.poll(async () => (await page.request.get(oldPhoto)).status(), { message: `${oldPhoto} is removed` }).not.toBe(200);
+  await expect
+    .poll(async () => (await page.request.get(oldPhoto)).status(), { message: `${oldPhoto} is removed` })
+    .not.toBe(200);
   await page.getByLabel(`Сделано из 4 досок: ${title}`).fill("4");
   await page.getByRole("button", { name: `Сохранить счёт дел: ${title}` }).click();
   await expect(page.getByRole("button", { name: `Убрать из списка: ${title}` })).toBeVisible();
@@ -278,7 +303,9 @@ test("panel pages pass axe and have unique titles", async ({ page }) => {
   ];
   for (const path of paths) {
     await page.goto(path);
-    const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+      .analyze();
     expect(results.violations.map((v) => `${path}: ${v.id} ${v.nodes[0].target.join(" ")}`)).toEqual([]);
     const title = await page.title();
     expect(titles.get(title), `title "${title}" of ${path} is also used by ${titles.get(title)}`).toBeUndefined();

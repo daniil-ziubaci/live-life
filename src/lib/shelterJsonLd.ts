@@ -9,11 +9,9 @@ type ShelterForJsonLd = {
 };
 
 export function buildShelterJsonLd(shelter: ShelterForJsonLd, url: string) {
-  const sameAs = [
-    shelter.instagram_url,
-    shelter.viber_url,
-    shelter.telegram_url,
-  ].filter((link): link is string => Boolean(link));
+  const sameAs = [shelter.instagram_url, shelter.viber_url, shelter.telegram_url].filter((link): link is string =>
+    Boolean(link),
+  );
 
   return {
     "@context": "https://schema.org",

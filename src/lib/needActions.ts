@@ -33,12 +33,19 @@ export async function handleNeedPost(astro: AstroGlobal): Promise<Response> {
     if (!itemId) {
       fail("Выберите позицию.");
     } else if (!validAmount(amount)) {
-      fail(intent === "receive" ? "Введите, сколько получили, например 2,5." : "Введите, сколько израсходовали, например 2,5.");
+      fail(
+        intent === "receive"
+          ? "Введите, сколько получили, например 2,5."
+          : "Введите, сколько израсходовали, например 2,5.",
+      );
     } else {
-      const { data: remaining, error } = await supabase.rpc(intent === "receive" ? "receive_purchase" : "record_consumption", {
-        p_item_id: itemId,
-        p_amount: amount,
-      });
+      const { data: remaining, error } = await supabase.rpc(
+        intent === "receive" ? "receive_purchase" : "record_consumption",
+        {
+          p_item_id: itemId,
+          p_amount: amount,
+        },
+      );
       if (error) {
         fail(
           error.code === "P0002"
@@ -49,7 +56,11 @@ export async function handleNeedPost(astro: AstroGlobal): Promise<Response> {
         );
       } else {
         refreshPublicPages(astro);
-        const { data: item } = await supabase.from("purchase_items").select("name, unit").eq("id", itemId).maybeSingle();
+        const { data: item } = await supabase
+          .from("purchase_items")
+          .select("name, unit")
+          .eq("id", itemId)
+          .maybeSingle();
         const amountLabel = amount.toLocaleString("ru-RU");
         const message = !item
           ? intent === "receive"
@@ -70,7 +81,11 @@ export async function handleNeedPost(astro: AstroGlobal): Promise<Response> {
     if (!logId) {
       message = "Не выбрана покупка для отмены.";
     } else {
-      const { data: entry } = await supabase.from("purchase_log").select("amount, purchase_items(name, unit)").eq("id", logId).maybeSingle();
+      const { data: entry } = await supabase
+        .from("purchase_log")
+        .select("amount, purchase_items(name, unit)")
+        .eq("id", logId)
+        .maybeSingle();
       const { data: remaining, error } = await supabase.rpc("undo_purchase", { p_log_id: logId });
       if (error) {
         message =

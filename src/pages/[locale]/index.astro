@@ -89,137 +89,138 @@ const statCard = "flex flex-col-reverse rounded-2xl border border-(--border-stro
     </section>
     <div class="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pt-4 pb-10">
       {looking.error && <p role="alert">{t("loadError")}</p>}
-      {
-        lookingPets.length > 0 && (
-          <section aria-labelledby="looking-heading" class="flex flex-col gap-4">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 id="looking-heading" class="text-2xl font-bold">
-                {t("lookingHeading")}
-              </h2>
-              <a href={`/${locale}/catalog`} class={sectionLink}>
-                {t("allCatalog")}
-                <span aria-hidden="true" class={arrow}>→</span>
-              </a>
-            </div>
-            <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {lookingPets.map((pet, index) => (
-                <li class="grid">
-                  <PetCard locale={locale} pet={pet} eager={index < 3} headingLevel="h3" />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
-      {treatment.error && <p role="alert">{t("loadError")}</p>}
-      {
-        treatmentPets.length > 0 && (
-          <section aria-labelledby="treatment-heading" class="flex flex-col gap-4">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 id="treatment-heading" class="text-2xl font-bold">
-                {t("treatmentHeading")}
-              </h2>
-              <a href={`/${locale}/catalog?mode=treatment`} class={sectionLink}>
-                {t("allTreatment")}
-                <span aria-hidden="true" class={arrow}>→</span>
-              </a>
-            </div>
-            <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {treatmentPets.map((pet) => (
-                <li class="grid">
-                  <PetCard locale={locale} pet={pet} headingLevel="h3" />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
-      {urgent.error && <p role="alert">{t("loadError")}</p>}
-      {
-        urgentItems.length > 0 && (
-          <section aria-labelledby="urgent-heading" class="flex flex-col gap-4">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 id="urgent-heading" class="text-2xl font-bold">
-                {t("urgentHeading")}
-              </h2>
-              <a href={`/${locale}/needs?urgent=1`} class={sectionLink}>
-                {t("allUrgent")}
-                <span aria-hidden="true" class={arrow}>→</span>
-              </a>
-            </div>
-            <ContentLanguageNote
-              locale={locale}
-              language={contentLanguage}
-              translated={urgentItems.some((item) => item.translated)}
-            />
-            <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {urgentItems.map((item) => {
-                const categoryKey = getCategoryKey(item.category);
-                const unitKey = getUnitKey(item.unit);
-                return (
-                  <li class="group relative flex min-w-0 flex-col gap-3 rounded-2xl border-urgent border-(--danger) bg-(--surface) p-4 shadow-sm transition duration-300 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-(--focus) hover:shadow-2xl motion-safe:hover:-translate-y-1.5">
-                    <div class="flex min-w-0 flex-col gap-1">
-                      <div class="flex items-start justify-between gap-2">
-                        <h3 lang={item.translated ? locale : contentLanguage} class="min-w-0 text-lg font-bold wrap-anywhere">
-                          {item.name}
-                        </h3>
-                        <p
-                          aria-hidden="true"
-                          class="shrink-0 rounded-full bg-(--danger-soft) px-3 py-0.5 text-sm font-semibold text-(--danger)"
-                        >
-                          🔥 {tn("urgent")}
-                        </p>
-                      </div>
-                      <p class="text-(--muted)">{categoryKey ? tn(`categories.${categoryKey}`) : item.category}</p>
-                    </div>
-                    <div class="mt-auto flex flex-col gap-3">
-                      <p class="text-lg font-bold">
-                        {tn("remaining", {
-                          amount: formatNumber(locale, item.remaining),
-                          unit: unitKey ? tn(`units.${unitKey}`) : item.unit,
-                        })}
-                      </p>
-                      <a
-                        href="#footer-contact-heading"
-                        aria-label={tn("helpLabel", { name: item.name })}
-                        class="flex min-h-14 items-center justify-center self-start rounded-full bg-(--accent) px-6 py-3 text-lg font-semibold text-(--accent-contrast) sm:after:absolute sm:after:inset-0"
-                      >
-                        {tn("help")}
-                      </a>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        )
-      }
-      {statsError && <p role="alert">{t("loadError")}</p>}
-      {
-        !statsError && totalCount > 0 && (
-          <section aria-labelledby="stats-heading" class="flex flex-col gap-4">
-            <h2 id="stats-heading" class="text-2xl font-bold">
-              {t("statsHeading")}
+      {lookingPets.length > 0 && (
+        <section aria-labelledby="looking-heading" class="flex flex-col gap-4">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="looking-heading" class="text-2xl font-bold">
+              {t("lookingHeading")}
             </h2>
-            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <a href={`/${locale}/catalog`} class={sectionLink}>
+              {t("allCatalog")}
+              <span aria-hidden="true" class={arrow}>
+                →
+              </span>
+            </a>
+          </div>
+          <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {lookingPets.map((pet, index) => (
+              <li class="grid">
+                <PetCard locale={locale} pet={pet} eager={index < 3} headingLevel="h3" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {treatment.error && <p role="alert">{t("loadError")}</p>}
+      {treatmentPets.length > 0 && (
+        <section aria-labelledby="treatment-heading" class="flex flex-col gap-4">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="treatment-heading" class="text-2xl font-bold">
+              {t("treatmentHeading")}
+            </h2>
+            <a href={`/${locale}/catalog?mode=treatment`} class={sectionLink}>
+              {t("allTreatment")}
+              <span aria-hidden="true" class={arrow}>
+                →
+              </span>
+            </a>
+          </div>
+          <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {treatmentPets.map((pet) => (
+              <li class="grid">
+                <PetCard locale={locale} pet={pet} headingLevel="h3" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {urgent.error && <p role="alert">{t("loadError")}</p>}
+      {urgentItems.length > 0 && (
+        <section aria-labelledby="urgent-heading" class="flex flex-col gap-4">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="urgent-heading" class="text-2xl font-bold">
+              {t("urgentHeading")}
+            </h2>
+            <a href={`/${locale}/needs?urgent=1`} class={sectionLink}>
+              {t("allUrgent")}
+              <span aria-hidden="true" class={arrow}>
+                →
+              </span>
+            </a>
+          </div>
+          <ContentLanguageNote
+            locale={locale}
+            language={contentLanguage}
+            translated={urgentItems.some((item) => item.translated)}
+          />
+          <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {urgentItems.map((item) => {
+              const categoryKey = getCategoryKey(item.category);
+              const unitKey = getUnitKey(item.unit);
+              return (
+                <li class="group relative flex min-w-0 flex-col gap-3 rounded-2xl border-urgent border-(--danger) bg-(--surface) p-4 shadow-sm transition duration-300 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-(--focus) hover:shadow-2xl motion-safe:hover:-translate-y-1.5">
+                  <div class="flex min-w-0 flex-col gap-1">
+                    <div class="flex items-start justify-between gap-2">
+                      <h3
+                        lang={item.translated ? locale : contentLanguage}
+                        class="min-w-0 text-lg font-bold wrap-anywhere"
+                      >
+                        {item.name}
+                      </h3>
+                      <p
+                        aria-hidden="true"
+                        class="shrink-0 rounded-full bg-(--danger-soft) px-3 py-0.5 text-sm font-semibold text-(--danger)"
+                      >
+                        🔥 {tn("urgent")}
+                      </p>
+                    </div>
+                    <p class="text-(--muted)">{categoryKey ? tn(`categories.${categoryKey}`) : item.category}</p>
+                  </div>
+                  <div class="mt-auto flex flex-col gap-3">
+                    <p class="text-lg font-bold">
+                      {tn("remaining", {
+                        amount: formatNumber(locale, item.remaining),
+                        unit: unitKey ? tn(`units.${unitKey}`) : item.unit,
+                      })}
+                    </p>
+                    <a
+                      href="#footer-contact-heading"
+                      aria-label={tn("helpLabel", { name: item.name })}
+                      class="flex min-h-14 items-center justify-center self-start rounded-full bg-(--accent) px-6 py-3 text-lg font-semibold text-(--accent-contrast) sm:after:absolute sm:after:inset-0"
+                    >
+                      {tn("help")}
+                    </a>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+      {statsError && <p role="alert">{t("loadError")}</p>}
+      {!statsError && totalCount > 0 && (
+        <section aria-labelledby="stats-heading" class="flex flex-col gap-4">
+          <h2 id="stats-heading" class="text-2xl font-bold">
+            {t("statsHeading")}
+          </h2>
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class={statCard}>
+              <dt class="text-(--muted)">{t("statsTotal")}</dt>
+              <dd class="text-3xl font-bold">{formatNumber(locale, totalCount)}</dd>
+            </div>
+            <div class={statCard}>
+              <dt class="text-(--muted)">{t("statsLooking")}</dt>
+              <dd class="text-3xl font-bold">{formatNumber(locale, lookingCount.count ?? 0)}</dd>
+            </div>
+            {(adopted.count ?? 0) > 0 && (
               <div class={statCard}>
-                <dt class="text-(--muted)">{t("statsTotal")}</dt>
-                <dd class="text-3xl font-bold">{formatNumber(locale, totalCount)}</dd>
+                <dt class="text-(--muted)">{t("statsAdopted")}</dt>
+                <dd class="text-3xl font-bold">{formatNumber(locale, adopted.count ?? 0)}</dd>
               </div>
-              <div class={statCard}>
-                <dt class="text-(--muted)">{t("statsLooking")}</dt>
-                <dd class="text-3xl font-bold">{formatNumber(locale, lookingCount.count ?? 0)}</dd>
-              </div>
-              {(adopted.count ?? 0) > 0 && (
-                <div class={statCard}>
-                  <dt class="text-(--muted)">{t("statsAdopted")}</dt>
-                  <dd class="text-3xl font-bold">{formatNumber(locale, adopted.count ?? 0)}</dd>
-                </div>
-              )}
-            </dl>
-          </section>
-        )
-      }
+            )}
+          </dl>
+        </section>
+      )}
     </div>
   </main>
 </ShelterLayout>

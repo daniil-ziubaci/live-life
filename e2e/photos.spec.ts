@@ -33,9 +33,24 @@ test("the server accepts only photos prepared in the browser", async ({ page, ba
     description: "Спокойная кошка.",
   };
   const cases: [string, Buffer, Buffer, Buffer][] = [
-    ["camera original with EXIF", await image(1600, 1200, "jpeg", true), await image(800, 600, "jpeg", false), await image(1200, 630, "jpeg", false)],
-    ["full photo larger than 1600", await image(2000, 1500, "webp", false), await image(800, 600, "webp", false), await image(1200, 630, "jpeg", false)],
-    ["preview that is not JPEG", await image(1600, 1200, "webp", false), await image(800, 600, "webp", false), await image(1200, 630, "webp", false)],
+    [
+      "camera original with EXIF",
+      await image(1600, 1200, "jpeg", true),
+      await image(800, 600, "jpeg", false),
+      await image(1200, 630, "jpeg", false),
+    ],
+    [
+      "full photo larger than 1600",
+      await image(2000, 1500, "webp", false),
+      await image(800, 600, "webp", false),
+      await image(1200, 630, "jpeg", false),
+    ],
+    [
+      "preview that is not JPEG",
+      await image(1600, 1200, "webp", false),
+      await image(800, 600, "webp", false),
+      await image(1200, 630, "webp", false),
+    ],
     ["not an image", Buffer.from("<svg></svg>"), Buffer.from("x"), Buffer.from("x")],
   ];
   for (const [label, full, card, preview] of cases) {

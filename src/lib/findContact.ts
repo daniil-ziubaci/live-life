@@ -1,7 +1,6 @@
 const EMAIL = /[^\s@]+@[^\s@]+\.[^\s@]+/;
 const HANDLE = /(?:^|\s)@[\p{L}\d_]{3,}/u;
-const LINK =
-  /https?:\/\/|www\.|[\p{L}\d-]+\.(?:com|md|ru|ro|org|net|info|me|io|ua|eu|by|su|online|site)\b/iu;
+const LINK = /https?:\/\/|www\.|[\p{L}\d-]+\.(?:com|md|ru|ro|org|net|info|me|io|ua|eu|by|su|online|site)\b/iu;
 
 const DATE = /\b(?:\d{1,2}[./-]\d{1,2}[./-]\d{4}|\d{4}-\d{2}-\d{2})\b/g;
 const PHONE_CANDIDATE = /\+?\d[\d\s().-]{6,}\d/g;

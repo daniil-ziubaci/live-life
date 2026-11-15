@@ -72,9 +72,7 @@ if (existingError) {
   console.error("Не удалось прочитать позиции:", existingError.message);
   process.exit(1);
 }
-const idByName = new Map(
-  existing.map((item) => [item.name.trim().toLowerCase(), item.id]),
-);
+const idByName = new Map(existing.map((item) => [item.name.trim().toLowerCase(), item.id]));
 
 const toCreate: { entry: Entry; index: number }[] = [];
 const toUpdate: { id: string; entry: Entry }[] = [];

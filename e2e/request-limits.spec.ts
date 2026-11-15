@@ -5,15 +5,27 @@ test.skip(({ viewport }) => (viewport?.width ?? 0) < 900, "requests do not depen
 
 test("the login form refuses a body over 10 KB with 413", async ({ request, baseURL }) => {
   const origin = new URL(baseURL ?? "").origin;
-  const small = await request.post("/login", { headers: { origin }, form: { email: "a".repeat(9000), password: "x" }, maxRedirects: 0 });
+  const small = await request.post("/login", {
+    headers: { origin },
+    form: { email: "a".repeat(9000), password: "x" },
+    maxRedirects: 0,
+  });
   expect(small.status()).not.toBe(413);
-  const large = await request.post("/login", { headers: { origin }, form: { email: "a".repeat(11 * 1024), password: "x" }, maxRedirects: 0 });
+  const large = await request.post("/login", {
+    headers: { origin },
+    form: { email: "a".repeat(11 * 1024), password: "x" },
+    maxRedirects: 0,
+  });
   expect(large.status()).toBe(413);
   expect(await large.text()).toContain("Запрос слишком большой");
   expect(large.headers()["cache-control"]).toBe("no-store");
 });
 
-function statusForDeclaredLength(baseURL: string, path: string, length: number): Promise<{ status: number; text: string }> {
+function statusForDeclaredLength(
+  baseURL: string,
+  path: string,
+  length: number,
+): Promise<{ status: number; text: string }> {
   const url = new URL(baseURL);
   return new Promise((resolve, reject) => {
     const socket = connect(Number(url.port || 80), url.hostname, () => {

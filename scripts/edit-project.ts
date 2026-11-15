@@ -1,13 +1,7 @@
 import { textHash } from "../src/lib/hashText.ts";
 import { readTranslations, type Translations } from "../src/lib/translations.ts";
 import { connect } from "./lib/connect.ts";
-import {
-  checkProjectTexts,
-  parseProgress,
-  readMultiline,
-  type Progress,
-} from "./lib/projectTexts.ts";
-
+import { checkProjectTexts, parseProgress, readMultiline, type Progress } from "./lib/projectTexts.ts";
 
 type Options = {
   title?: string;
@@ -37,8 +31,7 @@ for (let i = 0; i < rest.length; i += 1) {
   const arg = rest[i];
   if (arg === "--apply") options.apply = true;
   else if (arg === "--to-top") options.toTop = true;
-  else if (arg === "--photo-alt" && rest[i + 1] !== undefined)
-    options.photoAlt = rest[++i].trim();
+  else if (arg === "--photo-alt" && rest[i + 1] !== undefined) options.photoAlt = rest[++i].trim();
   else if (arg === "--no-progress") options.progress = null;
   else if (arg === "--progress" && rest[i + 1] !== undefined) {
     const progress = parseProgress(rest[++i]);
@@ -49,17 +42,13 @@ for (let i = 0; i < rest.length; i += 1) {
     options.progress = progress;
   } else if (arg === "--pin") options.pinned = true;
   else if (arg === "--unpin") options.pinned = false;
-  else if (arg === "--title" && rest[i + 1] !== undefined)
-    options.title = rest[++i].trim();
-  else if (arg === "--description" && rest[i + 1] !== undefined)
-    options.description = readMultiline(rest[++i]);
+  else if (arg === "--title" && rest[i + 1] !== undefined) options.title = rest[++i].trim();
+  else if (arg === "--description" && rest[i + 1] !== undefined) options.description = readMultiline(rest[++i]);
   else if (arg === "--fix-translation" && rest[i + 3] !== undefined) {
     const [language, from, to] = rest.slice(i + 1, i + 4);
     i += 3;
     if (!LANGUAGES.includes(language)) {
-      console.error(
-        `Язык перевода «${language}» неизвестен. Можно: ${LANGUAGES.join(", ")}.`,
-      );
+      console.error(`Язык перевода «${language}» неизвестен. Можно: ${LANGUAGES.join(", ")}.`);
       process.exit(1);
     }
     if (!from.trim() || !to.trim()) {
@@ -120,11 +109,8 @@ if (projectsError || !projects) {
   process.exit(1);
 }
 
-const normalize = (text: string) =>
-  text.trim().toLocaleLowerCase("ru").replace(/ё/g, "е");
-const matches = projects.filter(
-  (project) => normalize(project.title) === normalize(currentTitle),
-);
+const normalize = (text: string) => text.trim().toLocaleLowerCase("ru").replace(/ё/g, "е");
+const matches = projects.filter((project) => normalize(project.title) === normalize(currentTitle));
 if (matches.length !== 1) {
   console.error(
     matches.length === 0
@@ -133,15 +119,12 @@ if (matches.length !== 1) {
   );
   for (const project of projects) {
     const state = project.is_archived ? "в архиве" : project.status;
-    console.error(
-      `  - ${project.title} (${state}${project.is_pinned ? ", закреплён" : ""})`,
-    );
+    console.error(`  - ${project.title} (${state}${project.is_pinned ? ", закреплён" : ""})`);
   }
   process.exit(1);
 }
 
-const quote = (text: string) =>
-  text.replace(/\r\n?/g, "\n").replace(/^/gm, "    | ");
+const quote = (text: string) => text.replace(/\r\n?/g, "\n").replace(/^/gm, "    | ");
 
 const project = matches[0];
 const changes: Partial<
@@ -162,10 +145,7 @@ if (options.title !== undefined && options.title !== project.title) {
   changes.title = options.title;
   console.log(`  название: «${project.title}» → «${options.title}»`);
 }
-if (
-  options.description !== undefined &&
-  options.description !== project.description
-) {
+if (options.description !== undefined && options.description !== project.description) {
   changes.description = options.description;
   console.log("  описание было:");
   console.log(quote(project.description));
@@ -177,14 +157,9 @@ if (changes.description === undefined) {
   console.log(quote(project.description));
 }
 if (project.photo_path) {
-  if (
-    options.photoAlt !== undefined &&
-    options.photoAlt !== project.photo_alt
-  ) {
+  if (options.photoAlt !== undefined && options.photoAlt !== project.photo_alt) {
     changes.photo_alt = options.photoAlt;
-    console.log(
-      `  описание фото: «${project.photo_alt}» → «${options.photoAlt}»`,
-    );
+    console.log(`  описание фото: «${project.photo_alt}» → «${options.photoAlt}»`);
   } else {
     console.log(`  описание фото (без изменений): «${project.photo_alt}»`);
   }
@@ -192,21 +167,12 @@ if (project.photo_path) {
   console.error("У проекта нет фото, описание фото задать нельзя.");
   process.exit(1);
 }
-const progressText = (
-  done: number | null,
-  total: number | null,
-  unit: string | null,
-) => (total === null ? "нет" : `${done} из ${total} ${unit}`);
-const currentProgress = progressText(
-  project.progress_done,
-  project.progress_total,
-  project.progress_unit,
-);
+const progressText = (done: number | null, total: number | null, unit: string | null) =>
+  total === null ? "нет" : `${done} из ${total} ${unit}`;
+const currentProgress = progressText(project.progress_done, project.progress_total, project.progress_unit);
 if (options.progress !== undefined) {
   const next = options.progress;
-  const nextText = next
-    ? progressText(next.done, next.total, next.unit)
-    : "нет";
+  const nextText = next ? progressText(next.done, next.total, next.unit) : "нет";
   if (nextText !== currentProgress) {
     changes.progress_total = next?.total ?? null;
     changes.progress_done = next?.done ?? null;
@@ -220,24 +186,16 @@ if (options.progress !== undefined) {
 }
 if (options.pinned !== undefined && options.pinned !== project.is_pinned) {
   changes.is_pinned = options.pinned;
-  console.log(
-    `  закрепление: ${project.is_pinned ? "да" : "нет"} → ${options.pinned ? "да" : "нет"}`,
-  );
+  console.log(`  закрепление: ${project.is_pinned ? "да" : "нет"} → ${options.pinned ? "да" : "нет"}`);
 }
 if (options.toTop) {
-  const shown = projects.filter(
-    (other) =>
-      other.status === "идёт" && !other.is_archived && !other.is_pinned,
-  );
+  const shown = projects.filter((other) => other.status === "идёт" && !other.is_archived && !other.is_pinned);
   const newest = shown.reduce<string | null>(
-    (latest, other) =>
-      latest === null || other.created_at > latest ? other.created_at : latest,
+    (latest, other) => (latest === null || other.created_at > latest ? other.created_at : latest),
     null,
   );
   if (project.is_pinned) {
-    console.log(
-      "  порядок: проект закреплён и и так стоит выше незакреплённых, --to-top не нужен",
-    );
+    console.log("  порядок: проект закреплён и и так стоит выше незакреплённых, --to-top не нужен");
   } else if (shown.length > 1 && newest !== project.created_at) {
     changes.created_at = new Date().toISOString();
     console.log("  порядок: станет первым среди незакреплённых проектов");
@@ -287,9 +245,7 @@ if (options.fixes.length > 0) {
     }
     if (outdated) failed = true;
     else if (found === 0) {
-      console.error(
-        `  в переводе ${language} нет фразы «${from}» (регистр букв важен).`,
-      );
+      console.error(`  в переводе ${language} нет фразы «${from}» (регистр букв важен).`);
       failed = true;
     }
   }

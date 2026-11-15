@@ -44,7 +44,10 @@ function buildQuery(head: boolean) {
   if (isBlocked) {
     query = query.eq("status", PET_STATUS_TREATMENT).order("status_changed_at", { ascending: true }).order("name");
   } else if (isTreatment) {
-    query = query.not("needs_treatment_since", "is", null).order("needs_treatment_since", { ascending: true }).order("name");
+    query = query
+      .not("needs_treatment_since", "is", null)
+      .order("needs_treatment_since", { ascending: true })
+      .order("name");
   } else {
     query = query.order("status_rank").order("created_at", { ascending: false }).order("name");
   }
@@ -62,7 +65,10 @@ function buildQuery(head: boolean) {
 }
 
 const from = (requestedPage - 1) * CATALOG_PAGE_SIZE;
-const [counted, loaded] = await Promise.all([buildQuery(true), buildQuery(false).range(from, from + CATALOG_PAGE_SIZE - 1)]);
+const [counted, loaded] = await Promise.all([
+  buildQuery(true),
+  buildQuery(false).range(from, from + CATALOG_PAGE_SIZE - 1),
+]);
 if (counted.error || loaded.error) {
   throw new Error("Не удалось загрузить питомцев из базы.");
 }
@@ -100,7 +106,9 @@ const filterLink =
 const pageLink = `${filterLink} aria-[current=page]:border-(--accent) aria-[current=page]:bg-(--accent) aria-[current=page]:font-semibold aria-[current=page]:text-(--accent-contrast)`;
 const legend =
   "mb-2 cursor-default text-sm font-semibold text-(--muted) sm:float-left sm:mb-0 sm:w-24 sm:pt-2.5 sm:text-base";
-const searchPart = (search ? `&q=${encodeURIComponent(search)}` : "") + (species === "cat" || species === "dog" ? `&species=${species}` : "");
+const searchPart =
+  (search ? `&q=${encodeURIComponent(search)}` : "") +
+  (species === "cat" || species === "dog" ? `&species=${species}` : "");
 const prefix = isBlocked ? "treatmentBlocked" : "treatment";
 const query = isBlocked ? "?mode=treatment&group=blocked" : isTreatment ? "?mode=treatment" : "";
 const pageQuery = requestedPage > 1 ? `${query ? "&" : "?"}page=${requestedPage}` : "";
@@ -144,23 +152,41 @@ const filters = isTreatment
     ];
 ---
 
-<ShelterLayout locale={locale} shelter={shelter} title={title} description={description} path={`/catalog${query}${pageQuery}`}>
+<ShelterLayout
+  locale={locale}
+  shelter={shelter}
+  title={title}
+  description={description}
+  path={`/catalog${query}${pageQuery}`}
+>
   {search && <meta slot="head" name="robots" content="noindex, follow" />}
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pt-4 pb-10">
     <h1 class="text-center text-3xl font-bold">
-      {isBlocked ? t("treatmentBlockedHeading") : isTreatment ? t("treatmentHeading") : t("heading", { shelter: shelter.name })}
+      {isBlocked
+        ? t("treatmentBlockedHeading")
+        : isTreatment
+          ? t("treatmentHeading")
+          : t("heading", { shelter: shelter.name })}
     </h1>
     {!isTreatment && <p class="-mt-3 text-center text-lg text-(--muted)">{t("subheading")}</p>}
-    {
-      isTreatment && (
-        <p class="-mt-3 text-center text-lg text-(--muted)">
-          <Rich text={t(isBlocked ? "treatmentIntroBlocked" : "treatmentIntroHelp")} links={{ link: "#footer-contact-heading" }} />
-        </p>
-      )
-    }
+    {isTreatment && (
+      <p class="-mt-3 text-center text-lg text-(--muted)">
+        <Rich
+          text={t(isBlocked ? "treatmentIntroBlocked" : "treatmentIntroHelp")}
+          links={{ link: "#footer-contact-heading" }}
+        />
+      </p>
+    )}
     <div class="flex flex-col gap-4 rounded-2xl border border-(--border) bg-(--surface) p-4 shadow-sm">
-      <form role="search" action={`/${locale}/catalog`} method="get" class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
-        <label for="catalog-search" class="text-sm font-semibold text-(--muted) sm:w-24 sm:text-base">{t("searchLabel")}</label>
+      <form
+        role="search"
+        action={`/${locale}/catalog`}
+        method="get"
+        class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0"
+      >
+        <label for="catalog-search" class="text-sm font-semibold text-(--muted) sm:w-24 sm:text-base">
+          {t("searchLabel")}
+        </label>
         <div class="flex max-w-95 min-w-0 flex-1 gap-2">
           <input
             id="catalog-search"
@@ -170,7 +196,10 @@ const filters = isTreatment
             maxlength="50"
             class="min-h-10 min-w-0 flex-1 rounded-full border border-(--border-strong) bg-(--surface) px-4 focus-visible:outline-offset-0! focus-visible:outline-(--accent)!"
           />
-          <button type="submit" class="min-h-10 cursor-pointer rounded-full bg-(--accent) px-4 text-(--accent-contrast) hover:shadow-md">
+          <button
+            type="submit"
+            class="min-h-10 cursor-pointer rounded-full bg-(--accent) px-4 text-(--accent-contrast) hover:shadow-md"
+          >
             {t("searchButton")}
           </button>
         </div>
@@ -186,89 +215,93 @@ const filters = isTreatment
           <fieldset class="min-w-0">
             <legend class={legend}>{t("species")}</legend>
             <div class="flex flex-wrap gap-2">
-              <a href={buildHref(undefined, sex, age)} aria-current={current(species === undefined)} class={filterLink}>{t("all")}</a>
-              <a href={buildHref("dog", sex, age)} aria-current={current(species === "dog")} class={filterLink}>{t("dogs")}</a>
-              <a href={buildHref("cat", sex, age)} aria-current={current(species === "cat")} class={filterLink}>{t("cats")}</a>
+              <a href={buildHref(undefined, sex, age)} aria-current={current(species === undefined)} class={filterLink}>
+                {t("all")}
+              </a>
+              <a href={buildHref("dog", sex, age)} aria-current={current(species === "dog")} class={filterLink}>
+                {t("dogs")}
+              </a>
+              <a href={buildHref("cat", sex, age)} aria-current={current(species === "cat")} class={filterLink}>
+                {t("cats")}
+              </a>
             </div>
           </fieldset>
-          {
-            isTreatment && (
-              <fieldset class="min-w-0">
-                <legend class={legend}>{t("treatmentLegend")}</legend>
-                <div class="flex flex-wrap gap-2">
-                  <a href={`/${locale}/catalog?mode=treatment${searchPart}`} aria-current={current(!isBlocked)} class={filterLink}>
-                    {t("treatmentGroupHelp")}
+          {isTreatment && (
+            <fieldset class="min-w-0">
+              <legend class={legend}>{t("treatmentLegend")}</legend>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  href={`/${locale}/catalog?mode=treatment${searchPart}`}
+                  aria-current={current(!isBlocked)}
+                  class={filterLink}
+                >
+                  {t("treatmentGroupHelp")}
+                </a>
+                <a
+                  href={`/${locale}/catalog?mode=treatment&group=blocked${searchPart}`}
+                  aria-current={current(isBlocked)}
+                  class={filterLink}
+                >
+                  {t("treatmentGroupBlocked")}
+                </a>
+              </div>
+            </fieldset>
+          )}
+          {filters.map((filter) => (
+            <fieldset class="min-w-0">
+              <legend class={legend}>{filter.legend}</legend>
+              <div class="flex flex-wrap gap-2">
+                {filter.options.map((option) => (
+                  <a href={option.href} aria-current={current(option.current)} class={filterLink}>
+                    {option.label}
                   </a>
-                  <a href={`/${locale}/catalog?mode=treatment&group=blocked${searchPart}`} aria-current={current(isBlocked)} class={filterLink}>
-                    {t("treatmentGroupBlocked")}
-                  </a>
-                </div>
-              </fieldset>
-            )
-          }
-          {
-            filters.map((filter) => (
-              <fieldset class="min-w-0">
-                <legend class={legend}>{filter.legend}</legend>
-                <div class="flex flex-wrap gap-2">
-                  {filter.options.map((option) => (
-                    <a href={option.href} aria-current={current(option.current)} class={filterLink}>
-                      {option.label}
-                    </a>
-                  ))}
-                </div>
-              </fieldset>
-            ))
-          }
+                ))}
+              </div>
+            </fieldset>
+          ))}
         </div>
       </nav>
     </div>
     <p role="status" class="-mb-1 text-(--muted)">
-      {
-        total === 0
-          ? t("none")
-          : total <= CATALOG_PAGE_SIZE
-            ? t("found", { count: total })
-            : t("shown", { from: from + 1, to: from + pets.length, total })
-      }
+      {total === 0
+        ? t("none")
+        : total <= CATALOG_PAGE_SIZE
+          ? t("found", { count: total })
+          : t("shown", { from: from + 1, to: from + pets.length, total })}
     </p>
-    {
-      pets.length > 0 && (
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {pets.map((pet, index) => (
-            <PetCard locale={locale} pet={pet} eager={index < 3} />
-          ))}
-        </div>
-      )
-    }
-    {
-      lastPage > 1 && (
-        <nav aria-label={t("paginationLabel")} class="flex flex-wrap items-center justify-center gap-2">
-          {requestedPage > 1 && (
-            <a href={buildPageHref(requestedPage - 1)} class={pageLink}>
-              {t("previousPage")}
+    {pets.length > 0 && (
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {pets.map((pet, index) => (
+          <PetCard locale={locale} pet={pet} eager={index < 3} />
+        ))}
+      </div>
+    )}
+    {lastPage > 1 && (
+      <nav aria-label={t("paginationLabel")} class="flex flex-wrap items-center justify-center gap-2">
+        {requestedPage > 1 && (
+          <a href={buildPageHref(requestedPage - 1)} class={pageLink}>
+            {t("previousPage")}
+          </a>
+        )}
+        {pageNumbers.map((n, i) => (
+          <>
+            {i > 0 && n - pageNumbers[i - 1] > 1 && <span aria-hidden="true">…</span>}
+            <a
+              href={buildPageHref(n)}
+              aria-current={n === requestedPage ? "page" : undefined}
+              aria-label={t("pageLabel", { page: n })}
+              class={pageLink}
+            >
+              {n}
             </a>
-          )}
-          {pageNumbers.map((n, i) => (
-            <>
-              {i > 0 && n - pageNumbers[i - 1] > 1 && <span aria-hidden="true">…</span>}
-              <a
-                href={buildPageHref(n)}
-                aria-current={n === requestedPage ? "page" : undefined}
-                aria-label={t("pageLabel", { page: n })}
-                class={pageLink}
-              >
-                {n}
-              </a>
-            </>
-          ))}
-          {requestedPage < lastPage && (
-            <a href={buildPageHref(requestedPage + 1)} class={pageLink}>
-              {t("nextPage")}
-            </a>
-          )}
-        </nav>
-      )
-    }
+          </>
+        ))}
+        {requestedPage < lastPage && (
+          <a href={buildPageHref(requestedPage + 1)} class={pageLink}>
+            {t("nextPage")}
+          </a>
+        )}
+      </nav>
+    )}
   </main>
 </ShelterLayout>

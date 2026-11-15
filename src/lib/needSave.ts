@@ -4,9 +4,14 @@ import { parsePurchaseItemEdit } from "@/lib/parsePurchaseItemEdit";
 import { parsePurchaseItemFields } from "@/lib/parsePurchaseItemFields";
 import { translateItem } from "@/lib/translate";
 
-export type NeedSaveResult = { ok: true; redirect: string } | { ok: false; error: string; values: Record<string, string> };
+export type NeedSaveResult =
+  { ok: true; redirect: string } | { ok: false; error: string; values: Record<string, string> };
 
-export async function saveNeed(astro: AstroGlobal, formData: FormData, existingId: string | null): Promise<NeedSaveResult> {
+export async function saveNeed(
+  astro: AstroGlobal,
+  formData: FormData,
+  existingId: string | null,
+): Promise<NeedSaveResult> {
   const values = formValues(formData);
   const fail = (error: string): NeedSaveResult => ({ ok: false, error, values });
   const supabase = astro.locals.supabase;

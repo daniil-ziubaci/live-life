@@ -13,7 +13,9 @@ export const GET: APIRoute = async () => {
   if (ALLOW_INDEXING === "true") {
     const supabase = getPublicClient();
     const [pets, projects] = await Promise.all([
-      fetchAll((from, to) => supabase.from("pets").select("id").in("status", PUBLIC_PET_STATUSES).order("id").range(from, to)),
+      fetchAll((from, to) =>
+        supabase.from("pets").select("id").in("status", PUBLIC_PET_STATUSES).order("id").range(from, to),
+      ),
       supabase.from("projects").select("id").eq("is_archived", false).limit(1),
     ]);
     paths.push("", "/catalog", "/needs", "/about");
