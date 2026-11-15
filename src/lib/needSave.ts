@@ -16,6 +16,7 @@ export async function saveNeed(
   const fail = (error: string): NeedSaveResult => ({ ok: false, error, values });
   const supabase = astro.locals.supabase;
   let itemId: string;
+  let savedName: string;
 
   if (existingId) {
     const parsed = parsePurchaseItemEdit(formData);
@@ -30,11 +31,13 @@ export async function saveNeed(
     if (error) return fail("Не удалось сохранить позицию. Попробуйте ещё раз.");
     if (!data) return fail("Позиция не найдена или недоступна.");
     itemId = existingId;
+    savedName = name;
   } else {
     const parsed = parsePurchaseItemFields(formData);
     if (!parsed.ok) return fail(parsed.error);
     const { name, category, unit, quantity, isUrgent, note } = parsed.fields;
     itemId = crypto.randomUUID();
+    savedName = name;
     const { error } = await supabase
       .from("purchase_items")
       .insert({ id: itemId, name, category, unit, remaining: quantity, is_urgent: isUrgent, note });
@@ -45,5 +48,11 @@ export async function saveNeed(
   refreshPublicPages(astro);
   const from = text(formData, "from");
   const section = from === "open" || from === "stock" || from === "closed" ? from : "";
-  return { ok: true, redirect: section ? `/volunteer/needs/${section}` : "/volunteer/needs" };
+  const redirect =
+    section === "open"
+      ? `/volunteer/needs/open?q=${encodeURIComponent(savedName)}`
+      : section
+        ? `/volunteer/needs/${section}`
+        : "/volunteer/needs";
+  return { ok: true, redirect };
 }
