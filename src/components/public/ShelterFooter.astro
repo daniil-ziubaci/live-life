@@ -25,25 +25,28 @@ const links = [
 const phone = shelter.contact_phone;
 const email = shelter.contact_email;
 const messenger = shelter.contact_messenger;
+const [emailBefore = "", emailAfter = ""] = email ? tAbout("emailLine", { email }).split(email) : [];
 const hoursLanguage = shelter.translated.hours ? locale : shelter.content_language;
 const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_language;
 ---
 
 <footer class="mt-auto w-full bg-(--surface)">
-  <div class="mx-auto grid w-full max-w-5xl gap-8 px-4 pt-8 pb-8 md:grid-cols-3 md:gap-x-12">
-    <section aria-labelledby="footer-contact-heading" class="flex flex-col gap-5">
+  <div class="mx-auto grid w-full max-w-5xl gap-8 px-4 pt-8 pb-6 md:grid-cols-3 md:pb-8 md:gap-x-12">
+    <section
+      aria-labelledby="footer-contact-heading"
+      class="flex flex-col gap-5 max-md:rounded-2xl max-md:bg-(--accent-soft) max-md:p-5"
+    >
       <div class="flex flex-col gap-2">
         <h2 id="footer-contact-heading" class="text-xl font-bold">
           {t("contactHeading")}
         </h2>
-        <p>{t("contactIntro")}</p>
       </div>
-      <Fragment>
-        <div class="flex flex-wrap gap-3">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-3">
           {phone && (
             <a
               href={`tel:${phone.replace(/[^\d+]/g, "")}`}
-              class="inline-flex min-h-14 max-w-full items-center justify-start rounded-full bg-(--accent) px-6 py-3 text-left text-lg font-semibold text-(--accent-contrast) hover:shadow-md"
+              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full md:w-full md:justify-center bg-(--accent) px-6 py-3 text-left text-lg md:text-center font-semibold text-(--accent-contrast) hover:shadow-md"
             >
               {tAbout("call", { phone })}
             </a>
@@ -51,7 +54,7 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
           {messenger && (
             <a
               href={messenger}
-              class="inline-flex min-h-14 max-w-full items-center justify-start rounded-full border-2 border-(--accent) px-6 py-3 text-left text-lg font-semibold text-(--accent) hover:bg-(--hover)"
+              class="flex min-h-14 w-fit max-w-full items-center justify-start rounded-full md:w-full md:justify-center bg-(--accent) px-6 py-3 text-left text-lg md:text-center font-semibold text-(--accent-contrast) hover:shadow-md"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -61,9 +64,20 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
           )}
           {!phone && !email && !messenger && <p>{t("noContact")}</p>}
         </div>
-        {phone && <p class="mt-3">{tAbout("phoneNote")}</p>}
-        {email && <p class="mt-3">{tAbout("emailLine", { email })}</p>}
-      </Fragment>
+        {phone && <p class="text-(--muted)">{tAbout("phoneNote")}</p>}
+        {email && (
+          <p>
+            {emailBefore}
+            <a
+              href={`mailto:${email}`}
+              class="block font-semibold break-all text-(--accent) underline underline-offset-2"
+            >
+              {email}
+            </a>
+            {emailAfter}
+          </p>
+        )}
+      </div>
       <SocialLinks
         locale={locale}
         instagram={shelter.instagram_url}
@@ -75,7 +89,7 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
     </section>
     <section
       aria-labelledby="footer-about-heading"
-      class="flex flex-col gap-4 border-t border-(--border) pt-8 md:border-t-0 md:pt-0"
+      class="flex flex-col gap-4 max-md:rounded-2xl max-md:bg-(--accent-soft) max-md:p-5"
     >
       <h2 id="footer-about-heading" class="text-xl font-bold">
         {shelter.name}
@@ -117,7 +131,7 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
     </section>
     <nav
       aria-labelledby="footer-links-heading"
-      class="flex flex-col gap-3 border-t border-(--border) pt-8 md:border-t-0 md:pt-0"
+      class="flex flex-col gap-3 max-md:rounded-2xl max-md:bg-(--accent-soft) max-md:p-5"
     >
       <p id="footer-links-heading" class="text-xl font-bold">
         {t("linksLabel")}
@@ -136,4 +150,17 @@ const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_la
   {locale !== shelter.content_language && (
     <p class="mx-auto w-full max-w-5xl px-4 pb-8 text-sm text-(--muted)">{t("translationNote")}</p>
   )}
+  <svg aria-hidden="true" focusable="false" class="block h-2.5 w-full text-(--border)">
+    <defs>
+      <pattern id="footer-wave" width="36" height="10" patternUnits="userSpaceOnUse">
+        <path d="M0 5 Q9 0 18 5 T36 5" fill="none" stroke="currentColor" stroke-width="1" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="10" fill="url(#footer-wave)" />
+  </svg>
+  <div>
+    <p class="mx-auto w-full max-w-5xl px-4 py-4 text-sm text-(--muted)">
+      © {shelter.founded_year ?? new Date().getFullYear()} {shelter.name}
+    </p>
+  </div>
 </footer>
