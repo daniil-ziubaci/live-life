@@ -1,6 +1,6 @@
 {
   "Home": {
-    "title": "{shelter} — cats and dogs looking for a home",
+    "title": "{shelter} — find a friend, help the animals",
     "description": "{shelter}: pets looking for a home, animals that urgently need help, and a list of what the shelter needs.",
     "heading": "{shelter}",
     "intro": "The animals here are waiting for a family. Find a friend who is looking for a home, or help those who need support most right now.",
@@ -114,8 +114,8 @@
     "helpLabel": "Help {name}",
     "helpTreatment": "Help with treatment",
     "helpTreatmentLabel": "Help with treatment: {name}",
-    "titleWithShelter": "{name}, {animal} looking for a home — {shelter}",
-    "titleInShelter": "{name}, {animal} at the shelter — {shelter}",
+    "titleWithShelter": "{name}, {animal} — {shelter}",
+    "titleInShelter": "{name}, {animal} receiving treatment — {shelter}",
     "needsTreatmentBadge": "urgent help with treatment needed",
     "status": {
       "looking": "looking for a home",

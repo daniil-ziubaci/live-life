@@ -1,6 +1,6 @@
 {
   "Home": {
-    "title": "{shelter} — câini și pisici caută o casă",
+    "title": "{shelter} — găsiți un prieten, ajutați animalele",
     "description": "{shelter}: animale care caută o casă, animale care au nevoie urgentă de ajutor și lista lucrurilor de care are nevoie adăpostul.",
     "heading": "{shelter}",
     "intro": "Aici trăiesc animale care așteaptă o familie. Găsiți un prieten care caută o casă sau ajutați-i pe cei care au cel mai mult nevoie de sprijin acum.",
@@ -114,8 +114,8 @@
     "helpLabel": "Ajută: {name}",
     "helpTreatment": "Ajută la tratament",
     "helpTreatmentLabel": "Ajută la tratament: {name}",
-    "titleWithShelter": "{name}, {animal} caută o casă — {shelter}",
-    "titleInShelter": "{name}, {animal} în adăpost — {shelter}",
+    "titleWithShelter": "{name}, {animal} — {shelter}",
+    "titleInShelter": "{name}, {animal} în tratament — {shelter}",
     "needsTreatmentBadge": "ajutor urgent pentru tratament",
     "status": {
       "looking": "caută o casă",

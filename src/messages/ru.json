@@ -1,6 +1,6 @@
 {
   "Home": {
-    "title": "{shelter} — собаки и кошки ищут дом",
+    "title": "{shelter} — найдите друга, помогите животным",
     "description": "{shelter}: питомцы, которые ищут дом, животные, которым срочно нужна помощь, и список того, что нужно приюту.",
     "heading": "{shelter}",
     "intro": "Здесь живут животные, которые ждут семью. Найдите друга, который ищет дом, или помогите тем, кому сейчас особенно нужна поддержка.",
@@ -114,8 +114,8 @@
     "helpLabel": "Помочь: {name}",
     "helpTreatment": "Помочь с лечением",
     "helpTreatmentLabel": "Помочь с лечением: {name}",
-    "titleWithShelter": "{name}, {animal} ищет дом — {shelter}",
-    "titleInShelter": "{name}, {animal} в приюте — {shelter}",
+    "titleWithShelter": "{name}, {animal} — {shelter}",
+    "titleInShelter": "{name}, {animal} на лечении — {shelter}",
     "needsTreatmentBadge": "срочно нужна помощь с лечением",
     "status": {
       "looking": "ищет дом",
