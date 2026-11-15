@@ -48,11 +48,10 @@ export async function saveNeed(
   refreshPublicPages(astro);
   const from = text(formData, "from");
   const section = from === "open" || from === "stock" || from === "closed" ? from : "";
-  const redirect =
-    section === "open"
-      ? `/volunteer/needs/open?q=${encodeURIComponent(savedName)}`
-      : section
-        ? `/volunteer/needs/${section}`
-        : "/volunteer/needs";
+  const redirect = section
+    ? `/volunteer/needs/${section}?q=${encodeURIComponent(savedName)}`
+    : section
+      ? `/volunteer/needs/${section}`
+      : "/volunteer/needs";
   return { ok: true, redirect };
 }

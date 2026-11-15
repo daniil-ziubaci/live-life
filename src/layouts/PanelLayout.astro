@@ -30,7 +30,7 @@ const from = Astro.url.searchParams.get("from");
 const picked = Astro.url.searchParams.get("q");
 const needsBack =
   inner?.[1] === "needs" && (from === "open" || from === "stock" || from === "closed")
-    ? `/volunteer/needs/${from}${from === "open" && picked ? `?q=${encodeURIComponent(picked)}` : ""}`
+    ? `/volunteer/needs/${from}${picked ? `?q=${encodeURIComponent(picked)}` : ""}`
     : null;
 const backHref = inner ? (needsBack ?? (inner[1] === "pets" ? "/volunteer" : `/volunteer/${inner[1]}`)) : null;
 const showSections = showNav && !path.startsWith("/volunteer/2fa");
