@@ -24,11 +24,6 @@ const Heading = headingLevel;
 
 <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-(--border) bg-(--surface) shadow-sm transition duration-300 ease-out focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-(--focus) hover:shadow-2xl motion-safe:hover:-translate-y-1.5">
   <div class="relative aspect-4/3">
-    {(pet.status !== PET_STATUS_LOOKING || pet.needsTreatmentSince) && (
-      <div class="absolute top-2.5 left-2.5 z-10 flex flex-col items-start gap-1.5">
-        <PetBadges locale={locale} status={pet.status} needsTreatmentSince={pet.needsTreatmentSince} />
-      </div>
-    )}
     <img
       src={cardCopyOf(pet.photo.url)}
       data-fallback={pet.photo.url}
@@ -40,7 +35,12 @@ const Heading = headingLevel;
       class="absolute inset-0 size-full bg-(--hover) object-cover"
     />
   </div>
-  <div class="flex flex-1 flex-col justify-between gap-1 px-4 py-3">
+  <div class="flex flex-1 flex-col gap-1 px-4 py-3">
+    {(pet.status !== PET_STATUS_LOOKING || pet.needsTreatmentSince) && (
+      <div class="flex flex-wrap items-center gap-1.5">
+        <PetBadges locale={locale} status={pet.status} needsTreatmentSince={pet.needsTreatmentSince} />
+      </div>
+    )}
     <Heading class="text-xl font-bold transition-colors duration-200 group-focus-within:text-(--accent) group-hover:text-(--accent) motion-reduce:transition-none">
       {pet.name}
     </Heading>
@@ -54,7 +54,7 @@ const Heading = headingLevel;
         <dd>{formatAge(pet.ageInMonths, pet.isAgeApproximate, tAge)}</dd>
       </div>
     </dl>
-    <div class="flex flex-wrap items-end gap-x-2 gap-y-1">
+    <div class="mt-auto flex flex-wrap items-end gap-x-2 gap-y-1">
       {sizeKey && (
         <dl class="flex gap-1 text-(--muted)">
           <dt>{t("size")}</dt>
