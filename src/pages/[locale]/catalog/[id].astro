@@ -88,26 +88,26 @@ const fact = "rounded-lg border border-(--border) bg-(--surface) px-4 py-3";
 >
   <main class="mx-auto flex w-full max-w-5xl flex-col gap-6 p-4">
     <nav aria-label={t("breadcrumbLabel")}>
-      <ol class="flex flex-wrap items-center gap-x-2 text-base">
-        <li class="flex items-center gap-x-2">
+      <ol class="flex items-center gap-x-2 text-base">
+        <li class="flex shrink-0 items-center gap-x-2">
           <a href={`/${locale}`} class={crumb}>
             {t("breadcrumbHome")}
           </a>
           <span aria-hidden="true">/</span>
         </li>
-        <li class="flex items-center gap-x-2">
+        <li class="flex shrink-0 items-center gap-x-2">
           <a href={catalogHref} class={crumb}>
             {isTreatmentRelated ? t("breadcrumbTreatment") : t("breadcrumbCatalog")}
           </a>
           <span aria-hidden="true">/</span>
         </li>
-        <li aria-current="page" class="font-semibold text-(--accent)">
+        <li aria-current="page" class="min-w-0 truncate font-semibold text-(--accent)">
           {pet.name}
         </li>
       </ol>
     </nav>
     <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
-      <div class="relative aspect-4/3 w-full overflow-hidden rounded-lg border border-(--border) bg-(--surface)">
+      <div class="relative aspect-4/3 w-full overflow-hidden rounded-lg border border-(--border) bg-(--surface) lg:sticky lg:top-20">
         <img
           src={pet.photo.url}
           alt={pet.photo.alt}
