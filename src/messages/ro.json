@@ -36,6 +36,7 @@
     "addressByAppointment": "Vizite doar cu programare"
   },
   "Nav": {
+    "donate": "Donează",
     "skipToContent": "Sari la conținut",
     "label": "Navigare principală",
     "home": "Acasă",
@@ -151,7 +152,7 @@
     "descriptionFallback": "{name}: contacte și informații despre adăpost.",
     "city": "Oraș:",
     "call": "Sunați: {phone}",
-    "phoneNote": "Acesta este numărul pentru apeluri și mesaje pe Viber.",
+    "phoneNote": "Numărul funcționează și pe Viber.",
     "emailLine": "E-mail: {email}",
     "textHeading": "Despre adăpost",
     "newTab": "(se deschide într-o filă nouă)",
@@ -204,7 +205,7 @@
     "handsCall": "Sunați: {phone}",
     "donationPay": "Transfer în contul adăpostului",
     "newTab": "(se deschide într-o filă nouă)",
-    "donationPaypal": "PayPal-ul adăpostului:",
+    "donationPaypalButton": "Donează prin PayPal",
     "title": "De ce are nevoie adăpostul — {shelter}",
     "description": "{shelter}: de ce are nevoie acum adăpostul — hrană, medicamente, igienă și consumabile. Alegeți un articol și ajutați.",
     "heading": "De ce are nevoie adăpostul",
@@ -221,7 +222,9 @@
     "urgent": "Urgent",
     "urgentFilter": "Urgente",
     "emptyUrgent": "Acum nu există nevoi urgente.",
-    "intro": "Aici este lista nevoilor pentru viața protejaților. Tratamentul celor bolnavi și lucrările adăpostului sunt în secțiunile <treatment>Tratament</treatment> și <projects>Proiecte</projects>. Vă mulțumim că ajutați!",
+    "intro": "Lista nevoilor adăpostului. Tratamentul și lucrările sunt în secțiunile <treatment>Tratament</treatment> și <projects>Proiecte</projects>.",
+    "thanks": "Vă mulțumim că ajutați!",
+    "cardThanks": "Suntem din suflet recunoscători fiecăruia!",
     "remaining": "Mai este nevoie de: {amount} {unit}",
     "categories": {
       "food": "Hrană",

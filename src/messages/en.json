@@ -36,6 +36,7 @@
     "addressByAppointment": "Visits by appointment"
   },
   "Nav": {
+    "donate": "Donate",
     "skipToContent": "Skip to content",
     "label": "Main navigation",
     "home": "Home",
@@ -151,7 +152,7 @@
     "descriptionFallback": "{name}: contacts and information about the shelter.",
     "city": "City:",
     "call": "Call: {phone}",
-    "phoneNote": "This number is for calls and for Viber messages.",
+    "phoneNote": "This number works on Viber too.",
     "emailLine": "Email: {email}",
     "textHeading": "About the shelter",
     "newTab": "(opens in a new tab)",
@@ -204,7 +205,7 @@
     "handsCall": "Call: {phone}",
     "donationPay": "Send money to the shelter's bank account",
     "newTab": "(opens in a new tab)",
-    "donationPaypal": "Shelter's PayPal:",
+    "donationPaypalButton": "Donate via PayPal",
     "title": "What the shelter needs — {shelter}",
     "description": "{shelter}: what the shelter needs right now — food, medicine, hygiene and supplies. Pick an item and help.",
     "heading": "What the shelter needs",
@@ -221,7 +222,9 @@
     "urgent": "Urgent",
     "urgentFilter": "Urgent",
     "emptyUrgent": "There are no urgent needs right now.",
-    "intro": "Here is the list of what the animals need for daily life. Treatment for sick animals and the shelter's work are in the <treatment>Treatment</treatment> and <projects>Projects</projects> sections. Thank you for helping!",
+    "intro": "The shelter's needs list. Treatment and shelter work are in the <treatment>Treatment</treatment> and <projects>Projects</projects> sections.",
+    "thanks": "Thank you for helping!",
+    "cardThanks": "We are heartily grateful to everyone!",
     "remaining": "Still needed: {amount} {unit}",
     "categories": {
       "food": "Food",

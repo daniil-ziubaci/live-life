@@ -36,6 +36,7 @@
     "addressByAppointment": "Посещение по договорённости"
   },
   "Nav": {
+    "donate": "Пожертвовать",
     "skipToContent": "Перейти к содержимому",
     "label": "Основная навигация",
     "home": "Главная",
@@ -151,7 +152,7 @@
     "descriptionFallback": "{name}: контакты и информация о приюте.",
     "city": "Город:",
     "call": "Позвонить: {phone}",
-    "phoneNote": "Это номер для звонков и для сообщений в Viber.",
+    "phoneNote": "Этот номер работает и в Viber.",
     "emailLine": "Почта: {email}",
     "textHeading": "О приюте",
     "newTab": "(откроется в новой вкладке)",
@@ -204,7 +205,7 @@
     "handsCall": "Позвонить: {phone}",
     "donationPay": "Перевести на счёт приюта",
     "newTab": "(откроется в новой вкладке)",
-    "donationPaypal": "PayPal приюта:",
+    "donationPaypalButton": "Перевести через PayPal",
     "title": "Что нужно приюту — {shelter}",
     "description": "{shelter}: что сейчас нужно приюту — корм, лекарства, гигиена и расходники. Выберите позицию и помогите.",
     "heading": "Что нужно приюту",
@@ -221,7 +222,9 @@
     "urgent": "Срочно",
     "urgentFilter": "Срочные",
     "emptyUrgent": "Срочных нужд сейчас нет.",
-    "intro": "Здесь список нужд для жизни подопечных. Лечение больных и работы приюта — в разделах <treatment>Лечение</treatment> и <projects>Проекты</projects>. Спасибо, что помогаете!",
+    "intro": "Список нужд приюта. Лечение больных и работы — в разделах <treatment>Лечение</treatment> и <projects>Проекты</projects>.",
+    "thanks": "Спасибо, что помогаете!",
+    "cardThanks": "Сердечно благодарны каждому!",
     "remaining": "Не хватает: {amount} {unit}",
     "categories": {
       "food": "Корм",

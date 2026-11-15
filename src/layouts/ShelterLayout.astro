@@ -37,6 +37,11 @@ const shelterImage =
     ? { url: publicPhotoUrl(previewCopyOf(shelter.photo_path)), alt: shelter.photo_alt }
     : undefined;
 const logo = shelter.brand_path ? publicPhotoUrl(`${shelter.brand_path}/logo.png`) : null;
+const hasMoney = Boolean(shelter.donation_text || shelter.payment_url || shelter.paypal_email);
+const donateHref = `${base}/needs#help-money`;
+const heartPath =
+  "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+const navIcons = ["🐕", "🤝", "💊", "🛠️", "🏠"];
 const linkClass =
   "flex min-h-12 items-center rounded-md px-4 font-medium transition-colors duration-200 hover:bg-(--hover) hover:text-(--accent) motion-reduce:transition-none aria-[current=page]:bg-(--hover) aria-[current=page]:font-semibold aria-[current=page]:text-(--accent) max-lg:font-semibold lg:inline-flex lg:min-h-0 lg:rounded-md lg:px-2 lg:py-2 lg:text-base";
 ---
@@ -88,27 +93,59 @@ const linkClass =
           data-menu-list
           data-closed
         >
-          {links.map((link) => (
-            <li>
-              <a href={link.href} aria-current={link.current ? "page" : undefined} class={linkClass}>
+          {links.map((link, index) => (
+            <li class="max-lg:py-0.5">
+              <a
+                href={link.href}
+                aria-current={link.current ? "page" : undefined}
+                class={`${linkClass} max-lg:min-h-14 max-lg:rounded-xl max-lg:border max-lg:border-(--border) max-lg:bg-(--surface) max-lg:text-lg max-lg:aria-[current=page]:border-(--accent) max-lg:aria-[current=page]:bg-(--accent-soft)`}
+              >
+                <span aria-hidden="true" class="mr-3 lg:hidden">
+                  {navIcons[index]}
+                </span>
                 {link.label}
               </a>
             </li>
           ))}
           <li class="mt-2 border-t border-(--border) pt-3 lg:hidden">
-            <LanguageSwitcher locale={locale} variant="list" />
-          </li>
-          <li class="mt-2 border-t border-(--border) pt-3 lg:hidden">
             <a
               href="#footer-contact-heading"
-              class="flex min-h-12 w-full items-center justify-center rounded-full bg-(--accent) px-5 font-semibold text-(--accent-contrast) hover:shadow-md"
+              class="flex min-h-12 w-full items-center justify-center rounded-full border-2 border-(--accent) px-5 font-semibold text-(--accent) hover:bg-(--hover)"
             >
               {t("contact")}
             </a>
           </li>
+          {hasMoney && (
+            <li class="mt-2 lg:hidden">
+              <a
+                href={donateHref}
+                class="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-(--accent) px-5 font-semibold text-(--accent-contrast) hover:shadow-md"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="size-5 fill-current">
+                  <path d={heartPath} />
+                </svg>
+                {t("donate")}
+              </a>
+            </li>
+          )}
+          <li class="mt-2 border-t border-(--border) pt-3 lg:hidden">
+            <LanguageSwitcher locale={locale} variant="list" />
+          </li>
         </ul>
       </nav>
-      <div class="hidden lg:order-3 lg:block lg:justify-self-end">
+      <div class="hidden lg:order-3 lg:flex lg:items-center lg:gap-2 lg:justify-self-end">
+        {hasMoney && (
+          <a
+            href={donateHref}
+            aria-label={t("donate")}
+            title={t("donate")}
+            class="inline-flex size-10 items-center justify-center rounded-full bg-(--accent) text-(--accent-contrast) hover:shadow-md"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="size-5 fill-current">
+              <path d={heartPath} />
+            </svg>
+          </a>
+        )}
         <LanguageSwitcher locale={locale} />
       </div>
     </div>
