@@ -328,8 +328,8 @@ const statusOptions: [string | undefined, string][] = [
                       <p>
                         {pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)},{" "}
                         {formatAge(monthsSince(pet.birth_date), pet.is_age_approximate, tAge)}
-                        {pet.size ? `, размер: ${PET_SIZE_LABELS[pet.size] ?? pet.size}` : ""}
                       </p>
+                      {pet.size && <p>Размер: {PET_SIZE_LABELS[pet.size] ?? pet.size}</p>}
                       {pet.enclosure && <p>Вольер: {pet.enclosure}</p>}
                       <form method="post" action="/volunteer" class="mt-auto flex gap-2">
                         <input type="hidden" name="petId" value={pet.id} />
