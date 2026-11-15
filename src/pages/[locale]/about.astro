@@ -39,7 +39,7 @@ const title = shelter.city
   : t("title", { name: shelter.name });
 const description = shelter.about ? truncateText(shelter.about, 155) : t("descriptionFallback", { name: shelter.name });
 const button =
-  "inline-flex min-h-11 items-center justify-center rounded-full bg-(--accent) px-5 py-2 font-semibold text-(--accent-contrast) hover:shadow-md";
+  "inline-flex min-h-14 items-center justify-center rounded-full bg-(--accent) px-6 py-3 text-lg font-semibold text-(--accent-contrast) hover:shadow-md";
 const link = "font-semibold text-(--accent) underline";
 ---
 
