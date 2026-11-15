@@ -3,7 +3,7 @@
 // (keep_vars keeps them on deploy); the build needs none.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "a11y-shelter-system",
+  "name": "live-life",
   "main": "./src/worker.ts",
   "compatibility_date": "2026-11-11",
   "compatibility_flags": ["nodejs_compat"],
