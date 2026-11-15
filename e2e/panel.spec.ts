@@ -203,11 +203,11 @@ test("a volunteer records a purchase, undoes it and records consumption", async 
   await page.getByRole("button", { name: "Добавить позицию" }).click();
   await expect(page).toHaveURL(/\/volunteer\/needs$/);
 
-  await page.getByLabel("Позиция").selectOption({ label: `${name}: Нужно: 10 кг` });
+  await page.getByLabel("Позиция", { exact: true }).fill(name);
   await page.getByLabel("Сколько получили").fill("abc");
   await page.getByRole("button", { name: "Записать" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "Введите, сколько получили" })).toBeVisible();
-  await page.getByLabel("Позиция").selectOption({ label: `${name}: Нужно: 10 кг` });
+  await page.getByLabel("Позиция", { exact: true }).fill(name);
   await page.getByLabel("Сколько получили").fill("2,5");
   await page.getByRole("button", { name: "Записать" }).click();
   await expect(page.getByRole("status").filter({ hasText: `Записано: 2,5 кг, ${name}. Нужно: 7,5 кг` })).toBeVisible();
@@ -219,10 +219,10 @@ test("a volunteer records a purchase, undoes it and records consumption", async 
   ).toBeVisible();
 
   await page.getByRole("link", { name: "Нужно купить" }).click();
-  const consumption = page.locator("details", { has: page.getByLabel(`Расход: ${name}`, { exact: true }) });
-  await consumption.getByLabel(`Расход: ${name}`, { exact: true }).click();
-  await consumption.getByLabel("Сколько израсходовали:").fill("1");
-  await page.getByRole("button", { name: `Записать расход: ${name}` }).click();
+  await page.getByLabel("Позиция", { exact: true }).fill(name);
+  const card = page.locator(`li[data-need-name="${name}"]`);
+  await card.getByLabel("Сколько израсходовали:").fill("1");
+  await card.getByRole("button", { name: `Записать расход: ${name}` }).click();
   await expect(page.getByRole("status").filter({ hasText: `расход 1 кг, ${name}. Нужно: 11 кг` })).toBeVisible();
 
   const publicPage = await page.context().newPage();
