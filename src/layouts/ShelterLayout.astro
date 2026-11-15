@@ -137,13 +137,9 @@ const linkClass =
         {hasMoney && (
           <a
             href={donateHref}
-            aria-label={t("donate")}
-            title={t("donate")}
-            class="inline-flex size-10 items-center justify-center rounded-full bg-(--accent) text-(--accent-contrast) hover:shadow-md"
+            class="inline-flex min-h-10 items-center justify-center rounded-full bg-(--accent) px-4 text-sm font-semibold lowercase whitespace-nowrap text-(--accent-contrast) hover:shadow-md"
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" class="size-5 fill-current">
-              <path d={heartPath} />
-            </svg>
+            {t("donate")}
           </a>
         )}
         <LanguageSwitcher locale={locale} />
