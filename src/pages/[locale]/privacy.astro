@@ -7,6 +7,7 @@ const page = await loadPublicPage(Astro);
 if (page instanceof Response) return page;
 const { locale, shelter } = page;
 const t = getTranslator(locale, "Privacy");
+const legalLanguage = shelter.translated.legalInfo ? locale : shelter.content_language;
 const sections = ["data", "cookies", "recipients", "operator", "retention", "rights"];
 ---
 
@@ -19,15 +20,44 @@ const sections = ["data", "cookies", "recipients", "operator", "retention", "rig
   brandPath={shelter.brand_path}
 >
   <main class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-4 pb-10">
+    <a
+      href={`/${locale}`}
+      class="-ml-2 flex min-h-11 w-fit items-center gap-2 rounded-md px-2 font-semibold text-(--accent) hover:underline"
+    >
+      <span aria-hidden="true">←</span>
+      {t("back")}
+    </a>
     <h1 class="text-2xl font-bold wrap-break-word sm:text-3xl">{t("heading")}</h1>
     <p>{t("intro")}</p>
-    <p class="rounded-2xl bg-(--accent-soft) p-4">{t("draftNotice")}</p>
     {sections.map((key) => (
       <section aria-labelledby={`${key}-heading`} class="flex flex-col gap-2">
         <h2 id={`${key}-heading`} class="text-xl font-bold">
           {t(`${key}.heading`)}
         </h2>
         <p class="whitespace-pre-line">{t(`${key}.text`)}</p>
+        {key === "operator" && (
+          <p>
+            {shelter.name}
+            {shelter.legal_info && (
+              <>
+                <br />
+                <span lang={legalLanguage}>{shelter.legal_info}</span>
+              </>
+            )}
+            {shelter.contact_email && (
+              <>
+                <br />
+                {t("operator.contactLabel")}{" "}
+                <a
+                  href={`mailto:${shelter.contact_email}`}
+                  class="font-semibold break-all text-(--accent) underline underline-offset-2"
+                >
+                  {shelter.contact_email}
+                </a>
+              </>
+            )}
+          </p>
+        )}
       </section>
     ))}
   </main>

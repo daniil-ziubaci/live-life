@@ -247,7 +247,7 @@
     "description": "Ce date colectăm, de ce și cum le puteți controla, pe înțelesul tuturor.",
     "heading": "Politica de confidențialitate",
     "intro": "Colectăm cât mai puține date și explicăm simplu ce și de ce.",
-    "draftNotice": "Pagina este încă în pregătire: operatorul, contactul pentru solicitări și termenele de păstrare vor fi indicate înainte de lansarea site-ului.",
+    "back": "Înapoi la pagina principală",
     "data": {
       "heading": "Ce date colectăm",
       "text": "Vizitatorii site-ului nu au nevoie de cont și nu le cerem nicio dată. Pentru voluntarii adăpostului păstrăm doar adresa de e-mail, rolul și numele adăpostului: ne trebuie ca să lucrăm împreună la treburile adăpostului.\nJurnalele serverului pot conține adresa IP a vizitatorului, care este tot dată cu caracter personal. O păstrăm o perioadă limitată. Din fotografiile animalelor se șterg, înainte de publicare, metadatele, inclusiv locul unde au fost făcute."
@@ -258,19 +258,20 @@
     },
     "recipients": {
       "heading": "Cine mai primește datele",
-      "text": "Site-ul funcționează pe serviciile Cloudflare (aplicația) și Supabase (baza de date, autentificarea și fișierele). Baza de date se află în Uniunea Europeană, la Frankfurt. Ambele companii sunt americane, de aceea condițiile de prelucrare a datelor și posibilul transfer în afara UE sunt încă în curs de verificare; rezultatul va apărea aici. Dacă vor fi conectate alte servicii, de exemplu urmărirea erorilor, le vom adăuga în această listă."
+      "text": "Site-ul funcționează pe serviciile Cloudflare (aplicația) și Supabase (baza de date, autentificarea și fișierele). Baza de date se află în Uniunea Europeană, la Frankfurt. Ambele companii sunt americane, de aceea datele pot fi transferate în afara UE în condițiile publicate de aceste companii. Ca să arătăm textele adăpostului în alte limbi, le trimitem spre traducere la DeepL (Germania). Butoanele de donație duc la site-urile serviciilor de plată, de exemplu PayPal: plata se face acolo, după regulile lor, iar site-ul nu primește datele plății. Dacă vor fi conectate alte servicii, de exemplu urmărirea erorilor, le vom adăuga în această listă."
     },
     "operator": {
       "heading": "Cine răspunde de date",
-      "text": "Operatorul și contactul pentru solicitări vor fi indicate aici înainte de lansarea site-ului."
+      "text": "Răspunde de date adăpostul: numele și datele lui juridice sunt indicate mai jos.",
+      "contactLabel": "E-mail pentru solicitări:"
     },
     "retention": {
       "heading": "Cât timp păstrăm datele",
-      "text": "Termenele de păstrare pentru fiecare tip de date vor fi indicate aici înainte de lansarea site-ului. Contul unui voluntar se șterge la cerere sau când persoana pleacă din adăpost."
+      "text": "Contul și adresa de e-mail ale unui voluntar se păstrează cât timp persoana lucrează la adăpost și se șterg la cerere sau când persoana pleacă din adăpost. Jurnalele serverului sunt ținute de serviciile pe care rulează site-ul, după regulile lor."
     },
     "rights": {
       "heading": "Drepturile dumneavoastră",
-      "text": "Puteți afla ce date avem despre dumneavoastră, le puteți corecta, șterge, puteți restricționa prelucrarea, primi o copie sau vă puteți opune prelucrării. Răspundem în cel mult o lună. Solicitarea se trimite prin e-mail operatorului, adresa va apărea aici.\nDacă considerați că v-au fost încălcate drepturile, puteți depune o plângere la Centrul Național pentru Protecția Datelor cu Caracter Personal din Moldova."
+      "text": "Puteți afla ce date avem despre dumneavoastră, le puteți corecta, șterge, puteți restricționa prelucrarea, primi o copie sau vă puteți opune prelucrării. Răspundem în cel mult o lună. Solicitarea se trimite prin e-mail operatorului, adresa este indicată mai sus, în secțiunea „Cine răspunde de date”.\nDacă considerați că v-au fost încălcate drepturile, puteți depune o plângere la Centrul Național pentru Protecția Datelor cu Caracter Personal din Moldova."
     }
   },
   "ContentLanguage": {
