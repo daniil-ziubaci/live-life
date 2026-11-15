@@ -1,0 +1,60 @@
+# Copy this file to .github/workflows/backup.yml in the PRIVATE backups
+# repository, together with backup.sh.
+name: backup
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          repository: ${{ secrets.BACKUP_REPOSITORY || github.repository }}
+          token: ${{ secrets.BACKUP_REPOSITORY_TOKEN || github.token }}
+          path: backups
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          path: tools
+          sparse-checkout: |
+            backup.sh
+            restore.sh
+            restore-drill.sh
+
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        with:
+          version: 2.122.0
+
+      - name: Back up database and photos
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+          PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET || 'pet-photos' }}
+          BACKUP_DIR: ${{ github.workspace }}/backups/${{ secrets.BACKUP_DIR || '.' }}
+        run: tools/backup.sh
+
+      - name: Commit the backup
+        working-directory: backups
+        run: |
+          git config user.name "backup bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          if git diff --cached --quiet; then
+            echo "Nothing changed"
+            exit 0
+          fi
+          git commit -q -m "backup $(date -u +%Y-%m-%d)"
+          git push
