@@ -44,7 +44,7 @@ const showSections = showNav && !path.startsWith("/volunteer/2fa");
       </a>
       <header class="sticky top-0 z-30 w-full bg-(--background) shadow-md">
         <div class="mx-auto flex max-w-5xl flex-col gap-1 px-4 pt-1.5 pb-3">
-          <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+          <div class="flex items-center justify-between gap-3">
             {shelterName && (
               <a
                 href="/ru"
@@ -57,7 +57,7 @@ const showSections = showNav && !path.startsWith("/volunteer/2fa");
               </a>
             )}
             {claims && (
-              <details class="relative order-2 ml-auto" data-dismissable>
+              <details class="relative order-2 ml-auto shrink-0" data-dismissable>
                 <summary class="flex h-9 cursor-pointer items-center gap-1 px-2 text-(--muted)">
                   <span>Аккаунт</span>
                   <span aria-hidden="true">▾</span>
