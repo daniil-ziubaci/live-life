@@ -21,6 +21,7 @@ const { title, description, locale = DEFAULT_LOCALE, path, siteName, image, bran
 const site = SITE_URL.replace(/\/$/, "");
 const OG_LOCALES: Record<Locale, string> = { ru: "ru_RU", ro: "ro_RO", en: "en_US" };
 const brand = (file: string) => (brandPath ? publicPhotoUrl(`${brandPath}/${file}`) : null);
+const photoOrigin = new URL(publicPhotoUrl("x")).origin;
 ---
 
 <!doctype html>
@@ -28,6 +29,7 @@ const brand = (file: string) => (brandPath ? publicPhotoUrl(`${brandPath}/${file
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href={photoOrigin} />
     <link rel="preload" href={nunitoCyrillic} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={nunitoLatin} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
