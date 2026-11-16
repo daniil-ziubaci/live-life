@@ -105,7 +105,7 @@ const statCard = "flex flex-col-reverse rounded-2xl border border-(--border-stro
           <ul role="list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {lookingPets.map((pet, index) => (
               <li class="grid">
-                <PetCard locale={locale} pet={pet} eager={index < 3} headingLevel="h3" />
+                <PetCard locale={locale} pet={pet} eager={index === 0} headingLevel="h3" />
               </li>
             ))}
           </ul>
