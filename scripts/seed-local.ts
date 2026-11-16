@@ -39,7 +39,7 @@ if (existing) {
 }
 
 const photos = readdirSync(GALLERY)
-  .filter((file) => /^\d+\.webp$/.test(file))
+  .filter((file) => /^\d{2}\.webp$/.test(file))
   .sort();
 if (photos.length === 0) {
   console.error(`В ${GALLERY} нет фото.`);
