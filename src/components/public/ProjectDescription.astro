@@ -8,10 +8,13 @@ interface Props {
 }
 
 const { text, language } = Astro.props;
+const blocks = parseDescription(text);
+const leadsToList = (index: number, lines: string[]) =>
+  blocks[index + 1]?.type === "list" && (lines.at(-1) ?? "").trimEnd().endsWith(":");
 ---
 
 <div lang={language} class="flex flex-col gap-3">
-  {parseDescription(text).map((block) =>
+  {blocks.map((block, index) =>
     block.type === "list" ? (
       <ul class="list-disc pl-6">
         {block.items.map((item) => (
@@ -19,7 +22,9 @@ const { text, language } = Astro.props;
         ))}
       </ul>
     ) : (
-      <p class="whitespace-pre-line">{block.lines.join("\n")}</p>
+      <p class:list={["whitespace-pre-line", leadsToList(index, block.lines) && "font-bold"]}>
+        {block.lines.join("\n")}
+      </p>
     ),
   )}
 </div>
